@@ -81,9 +81,25 @@
     padding: 4rem 2rem;
     position: relative;
     overflow: hidden;
+    background-image: url('./hero-bg.png');
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
   }
 
   .hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(
+      135deg,
+      rgba(10,10,15,0.85) 0%,
+      rgba(10,10,15,0.75) 50%,
+      rgba(10,10,15,0.8) 100%
+    );
+    pointer-events: none;
+  }
+
+  .hero::after {
     content: '';
     position: absolute; inset: 0;
     background: radial-gradient(ellipse 80% 60% at 50% 30%, rgba(232,201,122,0.06) 0%, transparent 70%);
@@ -93,7 +109,7 @@
   .hero-badge {
     display: inline-block;
     border: 1px solid var(--border);
-    background: rgba(232,201,122,0.08);
+    background: rgba(232,201,122,0.12);
     color: var(--accent);
     font-size: 0.78rem;
     font-weight: 700;
@@ -102,6 +118,9 @@
     padding: 0.4rem 1.2rem;
     border-radius: 100px;
     margin-bottom: 2rem;
+    position: relative;
+    z-index: 2;
+    backdrop-filter: blur(8px);
   }
 
   .hero h1 {
@@ -111,6 +130,9 @@
     line-height: 1.05;
     margin-bottom: 1.5rem;
     color: var(--text);
+    position: relative;
+    z-index: 2;
+    text-shadow: 0 2px 12px rgba(0,0,0,0.3);
   }
 
   .hero h1 span { color: var(--accent); }
@@ -121,10 +143,15 @@
     max-width: 580px;
     line-height: 1.75;
     margin-bottom: 2.5rem;
+    position: relative;
+    z-index: 2;
+    text-shadow: 0 1px 8px rgba(0,0,0,0.4);
   }
 
   .hero-cta {
     display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center;
+    position: relative;
+    z-index: 2;
   }
 
   .btn-primary {
@@ -190,7 +217,7 @@
   /* SECTION STYLES */
   .section {
     padding: 5rem 2rem;
-    max-width: 1100px;
+    max-width: 1200px;
     margin: 0 auto;
   }
   .section-tag {
@@ -256,7 +283,7 @@
 
   /* STEPS SECTION */
   .steps-section { background: var(--bg2); }
-  .steps-wrapper { max-width: 1100px; margin: 0 auto; padding: 5rem 2rem; }
+  .steps-wrapper { max-width: 1200px; margin: 0 auto; padding: 5rem 2rem; }
   .steps-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -269,10 +296,25 @@
   .step-card {
     background: var(--bg2);
     padding: 1.5rem;
-    transition: background 0.2s;
+    transition: background 0.2s, transform 0.2s;
     cursor: pointer;
+    position: relative;
   }
-  .step-card:hover { background: var(--bg3); }
+  .step-card:hover { 
+    background: var(--bg3); 
+    transform: translateY(-2px);
+  }
+  .step-card::after {
+    content: '→';
+    position: absolute;
+    bottom: 1rem;
+    left: 1.5rem;
+    color: var(--accent);
+    font-size: 1.2rem;
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+  .step-card:hover::after { opacity: 0.7; }
   .step-num {
     font-family: 'Frank Ruhl Libre', serif;
     font-size: 2rem;
@@ -386,7 +428,7 @@
 
   /* ========= DASHBOARD ========= */
   #page-dashboard { padding-top: 64px; min-height: 100vh; }
-  .dashboard-inner { max-width: 1100px; margin: 0 auto; padding: 3rem 2rem; }
+  .dashboard-inner { max-width: 1200px; margin: 0 auto; padding: 3rem 2rem; }
 
   .dash-header {
     display: flex; align-items: flex-start; justify-content: space-between; flex-wrap: wrap; gap: 1rem;
@@ -623,6 +665,79 @@
   }
   .btn-sm:hover { color: var(--accent); border-color: rgba(232,201,122,0.3); }
 
+  /* STEP DETAIL MODAL */
+  .step-modal-overlay {
+    display: none;
+    position: fixed; inset: 0; z-index: 1000;
+    background: rgba(0,0,0,0.8);
+    align-items: center; justify-content: center;
+    padding: 1rem;
+  }
+  .step-modal-overlay.open { display: flex; }
+  .step-modal {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 2.5rem;
+    width: 100%; max-width: 640px;
+    position: relative;
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+  .step-modal-close {
+    position: absolute; top: 1rem; left: 1rem;
+    background: none; border: none; color: var(--text2);
+    font-size: 1.3rem; cursor: pointer;
+    width: 32px; height: 32px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    transition: background 0.2s;
+  }
+  .step-modal-close:hover { background: var(--bg3); }
+  .step-modal-num {
+    font-family: 'Frank Ruhl Libre', serif;
+    font-size: 3rem; font-weight: 900;
+    color: var(--accent); opacity: 0.4;
+    line-height: 1; margin-bottom: 1rem;
+  }
+  .step-modal h2 {
+    font-family: 'Frank Ruhl Libre', serif;
+    font-size: 1.6rem; font-weight: 700;
+    margin-bottom: 1rem; line-height: 1.3;
+  }
+  .step-modal-content {
+    color: var(--text2); font-size: 1rem; line-height: 1.75;
+    margin-bottom: 2rem;
+  }
+  .step-modal-content h3 {
+    color: var(--text); font-size: 1.1rem; font-weight: 700;
+    margin: 1.75rem 0 0.75rem; line-height: 1.4;
+  }
+  .step-modal-content h3:first-child { margin-top: 0; }
+  .step-modal-content ul {
+    margin: 1rem 0 1rem 1.5rem;
+    padding: 0;
+  }
+  .step-modal-content li {
+    margin-bottom: 0.5rem;
+    color: var(--text2);
+  }
+  .step-modal-tip {
+    background: linear-gradient(135deg, rgba(232,201,122,0.08), rgba(232,201,122,0.03));
+    border: 1px solid rgba(232,201,122,0.25);
+    border-radius: 8px;
+    padding: 1.25rem 1.5rem;
+    margin-top: 1.5rem;
+  }
+  .step-modal-tip strong {
+    color: var(--accent);
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    display: block;
+    margin-bottom: 0.5rem;
+  }
+
   /* Toast */
   .toast {
     position: fixed; bottom: 2rem; right: 50%; transform: translateX(50%);
@@ -639,6 +754,18 @@
   @media(max-width: 600px) {
     .nav-links { gap: 0.75rem; }
     .progress-section { grid-template-columns: 1fr 1fr; }
+    .hero {
+      background-position: center top;
+      background-size: cover;
+    }
+    .hero::before {
+      background: linear-gradient(
+        135deg,
+        rgba(10,10,15,0.9) 0%,
+        rgba(10,10,15,0.8) 50%,
+        rgba(10,10,15,0.85) 100%
+      );
+    }
   }
 </style>
 </head>
@@ -662,8 +789,8 @@
 
   <section class="hero">
     <div class="hero-badge">אתגר 30 יום</div>
-    <h1>הגיע הזמן<br>להיות <span>חופשי</span></h1>
-    <p>פורנוגרפיה משפיעה על המוח, הקשרים הרגשיים, ויכולת ליהנות מחיים אמיתיים. אנחנו כאן כדי לעזור לך לפרוץ את המעגל — צעד אחד ביום.</p>
+    <h1>אתה מגיע<br>להיות <span>חופשי</span></h1>
+    <p>אם הגעת לכאן, כנראה שהרגשת שמשהו לא מתאים לך. אתה לא לבד בזה — מיליונים חווים את אותו הדבר. פורנוגרפיה משפיעה על המוח, הקשרים, ויכולת ליהנות מרגעי החיים האמיתיים. אנחנו כאן כדי ללוות אותך בצעדים הראשונים לחירות.</p>
     <div class="hero-cta">
       <button class="btn-primary" onclick="openModal('register')">התחל את האתגר היום ←</button>
       <button class="btn-secondary" onclick="showPage('home'); setTimeout(scrollToWhy, 100)">למה זה משנה?</button>
@@ -735,62 +862,62 @@
       <h2 class="section-title">12 הצעדים לחופש</h2>
       <p class="section-sub">תכנית מבוססת על גישות טיפוליות מוכחות — CBT, מיינדפולנס, ותמיכה חברתית.</p>
       <div class="steps-grid">
-        <div class="step-card">
+        <div class="step-card" onclick="openStepModal(0)">
           <span class="step-num">01</span>
           <h3>הכרה בבעיה</h3>
           <p>הודאה כנה שהשימוש יצא משליטה וגורם נזק.</p>
         </div>
-        <div class="step-card">
+        <div class="step-card" onclick="openStepModal(1)">
           <span class="step-num">02</span>
           <h3>הגדרת הגבול</h3>
           <p>מחליטים בדיוק מה "גמילה" אומרת עבורך ומסמנים את יום התחלה.</p>
         </div>
-        <div class="step-card">
+        <div class="step-card" onclick="openStepModal(2)">
           <span class="step-num">03</span>
           <h3>הסרת גישה</h3>
           <p>מתקינים חוסמי תוכן, מוחקים היסטוריה, מסירים אפליקציות — יוצרים חסמים פיזיים.</p>
         </div>
-        <div class="step-card">
+        <div class="step-card" onclick="openStepModal(3)">
           <span class="step-num">04</span>
           <h3>זיהוי הטריגרים</h3>
           <p>מזהים מתי ואיפה ה"דחף" הכי חזק — שעמום, לחץ, בדידות, שעות מאוחרות.</p>
         </div>
-        <div class="step-card">
+        <div class="step-card" onclick="openStepModal(4)">
           <span class="step-num">05</span>
           <h3>בניית תוכנית חלופה</h3>
           <p>לכל טריגר — תגובה חלופית. פעילות גופנית, שיחה, קריאה, מקלחת קרה.</p>
         </div>
-        <div class="step-card">
+        <div class="step-card" onclick="openStepModal(5)">
           <span class="step-num">06</span>
           <h3>תמיכה חברתית</h3>
           <p>מספרים לאדם אחד שאנחנו סומכים עליו. אחריות חברתית מכפילה סיכויי הצלחה.</p>
         </div>
-        <div class="step-card">
+        <div class="step-card" onclick="openStepModal(6)">
           <span class="step-num">07</span>
           <h3>מיינדפולנס לדחפים</h3>
           <p>לומדים לזהות את הדחף בלי לפעול לפיו — "גלישה על הגל" בלי לשבור.</p>
         </div>
-        <div class="step-card">
+        <div class="step-card" onclick="openStepModal(7)">
           <span class="step-num">08</span>
           <h3>ניהול רגשות</h3>
           <p>לומדים לזהות מה הרגש שמוביל לדחף — ולהגיב לרגש עצמו, לא לברוח ממנו.</p>
         </div>
-        <div class="step-card">
+        <div class="step-card" onclick="openStepModal(8)">
           <span class="step-num">09</span>
           <h3>שגרה בריאה</h3>
           <p>שינה מספקת, פעילות גופנית, תזונה, קשרים חברתיים — הבסיס לשחרור.</p>
         </div>
-        <div class="step-card">
+        <div class="step-card" onclick="openStepModal(9)">
           <span class="step-num">10</span>
           <h3>בחינת עצמי יומית</h3>
           <p>5 דקות לפני שינה — מה הלך טוב? מה היה קשה? ללא שיפוטיות.</p>
         </div>
-        <div class="step-card">
+        <div class="step-card" onclick="openStepModal(10)">
           <span class="step-num">11</span>
           <h3>התמודדות עם נפילה</h3>
           <p>נפילה אינה כישלון — היא חלק מהתהליך. לומדים, מתאמים, ממשיכים.</p>
         </div>
-        <div class="step-card">
+        <div class="step-card" onclick="openStepModal(11)">
           <span class="step-num">12</span>
           <h3>שמירה לטווח ארוך</h3>
           <p>30 הימים הם ההתחלה. בונים זהות חדשה שלא מוגדרת על ידי ההרגל הישן.</p>
@@ -911,6 +1038,19 @@
       <p class="form-error" id="admin-error">סיסמה שגויה</p>
       <button class="btn-primary" style="width:100%" onclick="doAdminLogin()">כניסה</button>
       <p class="modal-switch"><a onclick="switchModal('login')">← חזור</a></p>
+    </div>
+  </div>
+</div>
+
+
+<!-- =================== STEP DETAIL MODAL =================== -->
+<div class="step-modal-overlay" id="step-modal-overlay" onclick="closeStepModal(event)">
+  <div class="step-modal">
+    <button class="step-modal-close" onclick="closeStepModal()">✕</button>
+    <div class="step-modal-num" id="step-modal-num">01</div>
+    <h2 id="step-modal-title">הכרה בבעיה</h2>
+    <div class="step-modal-content" id="step-modal-content">
+      <p>Loading...</p>
     </div>
   </div>
 </div>
@@ -1275,7 +1415,426 @@ const STEP_NAMES = [
   { title: "שמירה לטווח ארוך", sub: "זהות חדשה" },
 ];
 
-// =================== AUTH ===================
+const STEP_DETAILS = [
+  {
+    title: "הכרה בבעיה",
+    content: `
+      <h3>💙 הצעד הראשון והחשוב ביותר</h3>
+      <p>הכרה בבעיה אינה אמירה של "אני חלש" או "אני לא טוב מספיק". היא הבנה שמשהו שהתחיל כבריחה או הנאה הפך להרגל שמשפיע על החיים שלך בצורה שלא רצית.</p>
+
+      <h3>איך זה נשמע?</h3>
+      <ul>
+        <li>"אני מבין שההרגל הזה לוקח יותר זמן וכוח נפשי ממה שאני רוצה לתת לו"</li>
+        <li>"אני רואה שזה משפיע על האנרגיה שלי, על הביטחון העצמי שלי, על הקשרים שלי"</li>
+        <li>"אני מכיר בכך שבאתי לכאן כי חלק ממני יודע שמגיע לי משהו יותר טוב"</li>
+      </ul>
+
+      <h3>זה לא אומר שאתה "שבור"</h3>
+      <p>פורנוגרפיה מיועדת להיות ממכרת. חברות משקיעות מיליארדים כדי שתישאר צמוד. המוח שלך פשוט עובד כמו שהוא אמור לעבוד — הוא למד לחפש את הגירוי הזה כי הוא חזק ונגיש.</p>
+
+      <div class="step-modal-tip">
+        <strong>מחשבה להיום</strong>
+        אתה לא כאן בגלל שאתה חלש. אתה כאן בגלל שאתה חזק מספיק כדי לרצות שינוי.
+      </div>
+    `
+  },
+  {
+    title: "הגדרת הגבול",
+    content: `
+      <h3>🎯 מה זה אומר בשבילך?</h3>
+      <p>גמילה יכולה להיות דברים שונים לאנשים שונים. חשוב שתגדיר בבירור מה המטרה שלך, כדי שתדע בדיוק על מה אתה עובד.</p>
+
+      <h3>שאלות להגדרה:</h3>
+      <ul>
+        <li>האם זה אפס צפייה בפורנוגרפיה? כולל תמונות, סרטונים, סיפורים?</li>
+        <li>מה לגבי אונות? (חלק בוחרים No-Fap מלא, חלק מתמקדים רק בפורנו)</li>
+        <li>מה עם תכנים "גבוליים" — רשתות חברתיות, סדרות עם תכנים מיניים?</li>
+        <li>איך אתה מגדיר "נפילה"? מה נחשב כשבירת הגבול?</li>
+      </ul>
+
+      <h3>הגישה שלנו: "נקי ופשוט"</h3>
+      <p>אנחנו ממליצים להתחיל עם הגדרה ברורה: אפס צפייה במטרד פורנוגרפי, אפס חיפוש אחר תכנים מיניים באינטרנט. הכל השאר — נקבע תוך כדי הדרך, לפי מה שמרגיש נכון לך.</p>
+
+      <div class="step-modal-tip">
+        <strong>המטרה של היום</strong>
+        כתוב משפט אחד ברור: "אני מתחייב לא לצפות ב___ למשך 30 יום, החל מ___."
+      </div>
+    `
+  },
+  {
+    title: "הסרת גישה",
+    content: `
+      <h3>🛡️ בניית חומת הגנה</h3>
+      <p>רצון טוב לבדו לא מספיק. כשהדחף חזק, אנחנו פועלים מהחלק הישן של המוח — לא מהחלק הרציונלי. בשלב הזה, הכי חשוב שלא תהיה גישה קלה.</p>
+
+      <h3>פעולות מיידיות:</h3>
+      <ul>
+        <li>מחק היסטוריית גלישה וסימניות</li>
+        <li>התקן חוסם תוכן (Qustodio, Norton Family, Cold Turkey)</li>
+        <li>הפעל SafeSearch בגוגל ובשאר מנועי החיפוש</li>
+        <li>מחק אפליקציות בעייתיות (אם יש)</li>
+        <li>שקול סינון ברמת הנתב הביתי</li>
+      </ul>
+
+      <h3>הגישה הנכונה לחוסמים</h3>
+      <p>חוסמים אינם פתרון קבוע — הם כלי זמני שנותן לך זמן לבנות הרגלים חדשים. המטרה היא שעד שהם יהיו מיותרים, כבר תהיה במקום אחר נפשית.</p>
+
+      <h3>אם אתה דואג מ"חוסר אמון עצמי"</h3>
+      <p>זה לא חוסר אמון עצמי — זה חכמה. אף ספורטאי מקצועי לא שומר ג'אנק פוד בבית. הוא לא "לא סומך על עצמו" — הוא יודע שהסביבה משפיעה על הבחירות.</p>
+
+      <div class="step-modal-tip">
+        <strong>שאלה לבחינה עצמית</strong>
+        איזו פעולה אחת מהרשימה למעלה הכי מפחידה אותך? התחל ממנה.
+      </div>
+    `
+  },
+  {
+    title: "זיהוי טריגרים",
+    content: `
+      <h3>🔍 מתי הדחף הכי חזק?</h3>
+      <p>דחפים לא מגיעים בבלאק. יש להם דפוס ברור — זמן, מקום, מצב רוח, מצב גופני. ככל שנכיר את הדפוס, כך נוכל לצפות אותו ולהתכונן אליו.</p>
+
+      <h3>טריגרים נפוצים:</h3>
+      <ul>
+        <li><strong>זמניים:</strong> שעות הערב המאוחרות, סופי שבוע, חופשות</li>
+        <li><strong>רגשיים:</strong> בדידות, דחייה, כישלון, לחץ, שעמום</li>
+        <li><strong>פיזיים:</strong> עייפות, הורמונים, לאחר אלכוהול</li>
+        <li><strong>חברתיים:</strong> תחושת דחייה, חוסר קשר, ויכוחים</li>
+      </ul>
+
+      <h3>תרגיל לזיהוי</h3>
+      <p>בשבוע הקרוב, בכל פעם שמרגיש דחף (גם אם לא פועל עליו) — כתוב מהר:</p>
+      <ul>
+        <li>איזה יום ושעה?</li>
+        <li>איפה אתה?</li>
+        <li>מה מצב הרוח לפני זה?</li>
+        <li>מה קרה ביום? (טוב/רע/רגיל)</li>
+      </ul>
+
+      <h3>הדפוס האישי שלך</h3>
+      <p>אחרי שבוע תתחיל לראות תבנית. אולי אתה תמיד חלש בימי רביעי אחרי עבודה קשה. אולי בלילות כשכולם ישנים. אולי לאחר ויכוחים. הדפוס שלך ייחודי לך.</p>
+
+      <div class="step-modal-tip">
+        <strong>שאלה חשובה</strong>
+        מה הטריגר הכי חזק שלך עכשיו? איך תדע שהוא מתחיל לפני שהוא מתפרץ?
+      </div>
+    `
+  },
+  {
+    title: "בניית תכנית חלופה",
+    content: `
+      <h3>⚡ מה עושים במקום?</h3>
+      <p>לא מספיק לעצור התנהגות — צריך למלא את הריק במשהו אחר. אחרת המוח יחזור למה שהוא יודע. התכנית החלופה היא מה שעוזר לעבור את הדחף בלי לפעול עליו.</p>
+
+      <h3>עקרון השיבוש המיידי</h3>
+      <p>כשמגיע דחף, יש לך בערך 10-15 דקות "לשבור" את השרשרת לפני שהיא מתחזקת מדי. הפעולה החלופה צריכה להיות:</p>
+      <ul>
+        <li><strong>מיידית:</strong> בת ביצוע תוך 30 שניות</li>
+        <li><strong>פיזית:</strong> משנה את המצב הפיזי שלך</li>
+        <li><strong>מרחיקה:</strong> לוקחת אותך הרחק מהמקום/הסיטואציה</li>
+      </ul>
+
+      <h3>רעיונות לפעולות חלופיות:</h3>
+      <ul>
+        <li>יציאה לאוויר צח למשך 15 דקות</li>
+        <li>מקלחת קרה למשך דקה</li>
+        <li>התקשרות לחבר/בן משפחה</li>
+        <li>פעילות גופנית מהירה (20 שכיבות סמיכה)</li>
+        <li>מדיטציה קצרה או נשימות עמוקות</li>
+        <li>כתיבה — רגשות, מטרות, כל דבר</li>
+      </ul>
+
+      <h3>התכנית שלך</h3>
+      <p>בחר 3 פעולות שמתאימות לטריגרים שזיהית. דחף בלילה = מקלחת קרה. דחף משעמום = יציאה החוצה. דחף מלחץ = שיחת טלפון.</p>
+
+      <div class="step-modal-tip">
+        <strong>בחן את עצמך</strong>
+        איזו פעולה חלופית הכי קלה לך לעשות כאן ועכשיו? תתרגל אותה — גם בלי דחף.
+      </div>
+    `
+  },
+  {
+    title: "תמיכה חברתית",
+    content: `
+      <h3>👥 אתה לא לבד בזה</h3>
+      <p>אחת התגליות הכי חשובות במחקר על גמילה: אנשים שמספרים למישהו אחד שהם עובדים על שינוי מצליחים ב-65% יותר מאלו שלא. זו לא דעה — זו עובדה מדעית.</p>
+
+      <h3>למה זה עובד?</h3>
+      <ul>
+        <li><strong>אחריות:</strong> קשה לי להכזיב מישהו שמכיר את המטרה שלי</li>
+        <li><strong>נקודת מבט:</strong> אדם אחר יכול להזכיר לי למה זה חשוב</li>
+        <li><strong>תמיכה:</strong> בימים קשים יש למי לפנות</li>
+        <li><strong>שיתוף עומס:</strong> הסוד מפסיק להיות כבד לבד</li>
+      </ul>
+
+      <h3>למי לספר?</h3>
+      <p>לא חייב להיות בן זוג או הורה. אפשר:</p>
+      <ul>
+        <li>חבר קרוב שאתה סומך עליו</li>
+        <li>אח או בן משפחה מתבגר</li>
+        <li>פסיכולוג/יועץ</li>
+        <li>קבוצת תמיכה אונליין (r/NoFap, קהילות בטלגרם)</li>
+        <li>חבר שגם הוא עושה שינוי דומה</li>
+      </ul>
+
+      <h3>איך מתחילים?</h3>
+      <p>לא צריך לספר הכל מהיום הראשון. מתחילים פשוט: "אני עובד על שינוי בהרגלים שלי ואשמח שתשאל אותי איך הולך פעם בשבוע." זה הכל.</p>
+
+      <div class="step-modal-tip">
+        <strong>אתגר היום</strong>
+        שלח הודעת טקסט לאדם אחד: "אני מתחיל משהו חשוב ואשמח לשתף איתך כשנפגש."
+      </div>
+    `
+  },
+  {
+    title: "מיינדפולנס לדחפים",
+    content: `
+      <h3>🧘‍♂️ גלישה על הגל</h3>
+      <p>מיינדפולנס לדחפים (Urge Surfing) זה לא מדיטציה מיסטית. זו טכניקה קונקרטית שמלמדת לשרוד דחף בלי לפעול עליו. הרעיון פשוט: דחף הוא כמו גל — הוא עולה, מגיע לשיא, ויורד בעצמו.</p>
+
+      <h3>הטכניקה במילים פשוטות:</h3>
+      <ul>
+        <li><strong>זיהוי:</strong> "הנה הדחף. אני מרגיש אותו."</li>
+        <li><strong>תצפית:</strong> איפה זה מרגש בגוף? חזה? בטן? יד?</li>
+        <li><strong>נשימה:</strong> נשימה איטית ועמוקה</li>
+        <li><strong>התבוננות:</strong> איך הדחף משנה צורה? מתחזק? נחלש?</li>
+        <li><strong>המתנה:</strong> לא לפעול — פשוט לחכות שהוא יעבור</li>
+      </ul>
+
+      <h3>למה זה עובד?</h3>
+      <p>רוב האנשים נלחמים בדחף או בורחים ממנו. שני הגישות מחזקות אותו. כשמתבוננים בו בלי שיפוט — כמו ענן שעובר — הוא מאבד מכוחו.</p>
+
+      <h3>תרגיל למתחילים:</h3>
+      <p>בפעם הבאה שיש דחף קטן (לא חייב להיות מיני — גם דחף לסמארטפון או לממתק):</p>
+      <ol>
+        <li>עצור ותגיד "אני רואה את הדחף"</li>
+        <li>שים יד על המקום בגוף שמרגיש את זה</li>
+        <li>קח 5 נשימות איטיות</li>
+        <li>שאל: "איך זה מרגיש עכשיו?"</li>
+      </ol>
+
+      <div class="step-modal-tip">
+        <strong>זכור</strong>
+        המטרה לא להרגיש טוב. המטרה להיות נוכח בזמן שלא מרגישים טוב.
+      </div>
+    `
+  },
+  {
+    title: "ניהול רגשות",
+    content: `
+      <h3>💭 מה מאחורי הדחף?</h3>
+      <p>פורנוגרפיה לרוב לא הבעיה האמיתית — היא הפתרון שהמוח מציע לבעיה אחרת. זה מה שנקרא "רגולציה רגשית" — שימוש בגירוי חיצוני כדי להתמודד עם רגש לא נוח.</p>
+
+      <h3>דחפים מתורגמים:</h3>
+      <ul>
+        <li><strong>שעמום:</strong> "אני צריך גירוי, משהו שיהיה מעניין"</li>
+        <li><strong>בדידות:</strong> "אני צריך קשר, גם אם מזויף"</li>
+        <li><strong>כישלון:</strong> "אני צריך להרגיש טוב עם עצמי"</li>
+        <li><strong>לחץ:</strong> "אני צריך שהראש יירגע"</li>
+        <li><strong>חרדה:</strong> "אני צריך בריחה מהחששות"</li>
+      </ul>
+
+      <h3>שאלת המפתח</h3>
+      <p>בפעם הבאה שיש דחף, לפני שעושים כל דבר, שאל: "מה אני באמת מרגיש עכשיו? מה אני באמת צריך?"</p>
+
+      <h3>תשובות אמיתיות לצרכים אמיתיים:</h3>
+      <ul>
+        <li><strong>שעמום:</strong> פעילות שמאתגרת (ספר, פודקאסט, יצירה)</li>
+        <li><strong>בדידות:</strong> קשר אמיתי (שיחת טלפון, הודעה לחבר)</li>
+        <li><strong>כישלון:</strong> הצלחה קטנה (ניקוי, ספורט, הישג קטן)</li>
+        <li><strong>לחץ:</strong> רגיעה אמיתית (מקלחת, מוזיקה, נשימות)</li>
+        <li><strong>חרדה:</strong> הארקה (יציאה לאוויר, פעילות פיזית)</li>
+      </ul>
+
+      <h3>תרגיל יומי</h3>
+      <p>בסוף היום שאל את עצמך: "מה הרגשתי היום?" ו"איך התמודדתי עם הרגשות הקשים?" לאט לאט תתחיל לזהות דפוסים.</p>
+
+      <div class="step-modal-tip">
+        <strong>משפט לזכירה</strong>
+        "הדחף אומר לי משהו חשוב על מה שאני צריך. בואו נשמע מה הוא רוצה לומר."
+      </div>
+    `
+  },
+  {
+    title: "שגרה בריאה",
+    content: `
+      <h3>🌱 הבסיס לשחרור</h3>
+      <p>גמילה לא מתרחשת בוואקום. היא מתרחשת בתוך החיים שלך — שינה, אוכל, עבודה, קשרים. ככל שהחיים יותר מאוזנים, כך הדחפים פחות שולטים.</p>
+
+      <h3>ארבעה עמודים בסיסיים:</h3>
+
+      <p><strong>1. שינה (7-9 שעות):</strong></p>
+      <ul>
+        <li>שעת כיבוי מסכים קבועה</li>
+        <li>חדר קריר וחשוך</li>
+        <li>לא ללכת למיטה רק כשעייפים</li>
+      </ul>
+
+      <p><strong>2. תזונה:</strong></p>
+      <ul>
+        <li>ארוחות קבועות (גם אם קטנות)</li>
+        <li>הפחתת סוכר מעובד</li>
+        <li>הרבה מים לאורך היום</li>
+      </ul>
+
+      <p><strong>3. פעילות גופנית:</strong></p>
+      <ul>
+        <li>לפחות 20 דקות ביום</li>
+        <li>לא חייב חדר כושר — הליכה מהירה מספיקה</li>
+        <li>הכי חשוב: עקביות, לא אינטנסיביות</li>
+      </ul>
+
+      <p><strong>4. קשרים חברתיים:</strong></p>
+      <ul>
+        <li>שיחה אמיתית אחת ביום</li>
+        <li>זמן איכות עם אנשים שאכפת להם ממך</li>
+        <li>פחות זמן מסכים, יותר זמן אמיתי</li>
+      </ul>
+
+      <h3>למה זה משנה?</h3>
+      <p>כשיש מחסור באחד מהתחומים האלה, המוח מחפש "פיצוי" — לרוב בגירוי מהיר וחזק כמו פורנוגרפיה. כשהבסיס מוצק, הדחפים פחות דחופים.</p>
+
+      <div class="step-modal-tip">
+        <strong>שאלה לבחינה</strong>
+        באיזה מהתחומים הארבעה אתה הכי חלש? מה פעולה אחת שתשפר אותו השבוע?
+      </div>
+    `
+  },
+  {
+    title: "בחינה עצמית יומית",
+    content: `
+      <h3>🕯️ חמש דקות לפני השינה</h3>
+      <p>בחינה עצמית יומית זה לא "חקירה עצמית" או נזיפה. זו הפוגה קצרה לחזור על היום ולראות מה הלך טוב, מה היה קשה, ומה אפשר ללמוד לזה.</p>
+
+      <h3>שלוש שאלות פשוטות:</h3>
+      <ol>
+        <li><strong>מה הלך טוב היום?</strong> (גם דברים קטנים — אכלתי בריא, הלכתי לישון בזמן)</li>
+        <li><strong>מה היה קשה?</strong> (רגשות, דחפים, מצבים מורכבים)</li>
+        <li><strong>מה אני רוצה שיהיה אחרת מחר?</strong> (לא הבטחות גדולות — שינוי קטן אחד)</li>
+      </ol>
+
+      <h3>חשוב: בלי שיפוטיות</h3>
+      <p>המטרה היא לא להיות "מושלם" או להכות את עצמך על טעויות. המטרה היא להיות מודע. מודעות היא הצעד הראשון לכל שינוי.</p>
+
+      <h3>איך לכתוב?</h3>
+      <ul>
+        <li>מחברת קטנה ליד המיטה</li>
+        <li>הערות בטלפון</li>
+        <li>יומן אישי</li>
+        <li>אפליקציית יומן</li>
+      </ul>
+
+      <h3>מה אתה תגלה?</h3>
+      <p>אחרי שבוע-שבועיים תתחיל לראות דפוסים: באילו ימים אתה הכי חזק? מה גורם לימים קשים? מה עוזר הכי הרבה? התובנות האלה יהיו הכלים שלך לשמירה לטווח ארוך.</p>
+
+      <div class="step-modal-tip">
+        <strong>התחלה פשוטה</strong>
+        היום, לפני השינה, כתב רק את התשובות לשלוש השאלות. שורה אחת לכל שאלה.
+      </div>
+    `
+  },
+  {
+    title: "התמודדות עם נפילה",
+    content: `
+      <h3>🤲 אם זה קורה — זה לא הסוף</h3>
+      <p>רוב האנשים יחוו לפחות נפילה אחת בדרך לגמילה. זה לא אומר שהם "נכשלו" — זה אומר שהם אנושיים. האמיץ האמיתי הוא לא מי שלא נופל, אלא מי שקם אחרי נפילה.</p>
+
+      <h3>מה לא לעשות אחרי נפילה:</h3>
+      <ul>
+        <li>❌ "כבר הרסתי הכל, אז בואו נמשיך להרוס"</li>
+        <li>❌ להגיד לעצמך "אני לא מתאים לזה"</li>
+        <li>❌ לחכות ל"יום מושלם" כדי להתחיל מחדש</li>
+        <li>❌ לוותר על האנשים שאמרת להם שאתה עובד על שינוי</li>
+      </ul>
+
+      <h3>מה כן לעשות:</h3>
+      <ol>
+        <li><strong>עצור מיד:</strong> נפילה אחת לא הופכת ליום שלם של נפילות</li>
+        <li><strong>נמק:</strong> מה בדיוק הביא לזה? מה הטריגר?</li>
+        <li><strong>למד:</strong> איך המערכת שבנית לא הגנה עליך הפעם?</li>
+        <li><strong>התאם:</strong> מה תשנה למחרת כדי שזה לא יחזור?</li>
+        <li><strong>התחל מחדש:</strong> מחר יום 1 חדש</li>
+      </ol>
+
+      <h3>נקודת מבט על כישלון</h3>
+      <p>נפילה אינה ראיה שאתה חלש — היא ראיה שהנושא חשוב לך. אם לא היה חשוב, לא היית מרגיש רע. הרגש הרע הוא הוכחה שהערכים שלך במקום הנכון.</p>
+
+      <h3>שאלות לחקירה עצמית (בלי שיפוטיות):</h3>
+      <ul>
+        <li>איזה רגש היה לפני הנפילה?</li>
+        <li>איפה היו החוסמים שהתקנתי?</li>
+        <li>למי יכולתי לפנות ולא פניתי?</li>
+        <li>מה הפעולה החלופית שלא עשיתי?</li>
+      </ul>
+
+      <div class="step-modal-tip">
+        <strong>משפט לזכירה</strong>
+        "נפילה היא אירוע, לא זהות. אני לא 'אדם שנופל' — אני אדם שלומד ומתקן מסלול."
+      </div>
+    `
+  },
+  {
+    title: "שמירה לטווח ארוך",
+    content: `
+      <h3>🌟 30 יום הם רק ההתחלה</h3>
+      <p>יום 30 הוא אבן דרך חשובה — אבל לא הסוף. המטרה האמיתית היא לא 30 יום נקיים, אלא לבנות זהות חדשה שלא תלויה ברגל הישן. אדם שחי את החיים שלו באמת — לא בורח מהם.</p>
+
+      <h3>שלוש רמות שמירה:</h3>
+
+      <p><strong>רמה 1 — מניעת נפילה:</strong></p>
+      <ul>
+        <li>החוסמים נשארים פעילים</li>
+        <li>האדם האחראי נשאר בתמונה</li>
+        <li>שגרה יומית קבועה</li>
+      </ul>
+
+      <p><strong>רמה 2 — בניית זהות:</strong></p>
+      <ul>
+        <li>"אני אדם שלא צופה בפורנוגרפיה" (לא "אני מנסה להפסיק")</li>
+        <li>מטרות חדשות שמלאות את הזמן והאנרגיה</li>
+        <li>קשרים אמיתיים ועמוקים יותר</li>
+      </ul>
+
+      <p><strong>רמה 3 — חיים מלאים:</strong></p>
+      <ul>
+        <li>הגמילה כבר לא מגדירה אותך</li>
+        <li>אתה מתמקד בלבנות, לא במה שאתה נמנע ממנו</li>
+        <li>יש לך סיבות ברורות לחיות בלי בריחות</li>
+      </ul>
+
+      <h3>תכנית לשנה הבאה:</h3>
+      <ul>
+        <li><strong>חודשים 1-3:</strong> מיצוק ההרגל החדש, המשך חוסמים</li>
+        <li><strong>חודשים 4-6:</strong> בניית פעילויות חדשות, קהילה תומכת</li>
+        <li><strong>חודשים 7-12:</strong> מטרות גדולות שמחליפות את הזמן והאנרגיה הישנים</li>
+      </ul>
+
+      <h3>הסימן שהצלחת</h3>
+      <p>היום שאתה שוכח לספור כמה ימים עברו — כי החיים שלך עכשיו יותר מעניינים מהחיים שהיו לך פעם.</p>
+
+      <div class="step-modal-tip">
+        <strong>חזון לעצמך</strong>
+        כתב 3 שורות: מי תהיה עוד שנה אם תמשיך בדרך הזו?
+      </div>
+    `
+  }
+];
+
+// Step modal functions
+function openStepModal(stepIndex) {
+  const step = STEP_DETAILS[stepIndex];
+  if (!step) return;
+  
+  document.getElementById('step-modal-num').textContent = String(stepIndex + 1).padStart(2, '0');
+  document.getElementById('step-modal-title').textContent = step.title;
+  document.getElementById('step-modal-content').innerHTML = step.content;
+  document.getElementById('step-modal-overlay').classList.add('open');
+}
+
+function closeStepModal(event) {
+  if (event && event.target.id !== 'step-modal-overlay') return;
+  document.getElementById('step-modal-overlay').classList.remove('open');
+}
 
 function openModal(type) {
   document.getElementById('modal-overlay').classList.add('open');
