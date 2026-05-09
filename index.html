@@ -1,0 +1,1690 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>אתגר 30 הימים | חופשי</title>
+<link href="https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;600;700;800&family=Frank+Ruhl+Libre:wght@300;400;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --bg2: #111118;
+    --bg3: #1a1a24;
+    --accent: #e8c97a;
+    --accent2: #c4a44a;
+    --text: #f0ede4;
+    --text2: #a09d94;
+    --text3: #6a6760;
+    --border: rgba(232,201,122,0.15);
+    --danger: #e05555;
+    --success: #4caf7d;
+    --radius: 12px;
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+
+  body {
+    font-family: 'Assistant', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    direction: rtl;
+    overflow-x: hidden;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed; top:0; right:0; left:0; z-index:100;
+    background: rgba(10,10,15,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 2rem;
+    height: 64px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .nav-logo {
+    font-family: 'Frank Ruhl Libre', serif;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--accent);
+    letter-spacing: 0.02em;
+    text-decoration: none;
+  }
+  .nav-links { display: flex; gap: 1.5rem; align-items: center; }
+  .nav-links a {
+    color: var(--text2); text-decoration: none; font-size: 0.9rem;
+    transition: color 0.2s; cursor: pointer;
+  }
+  .nav-links a:hover { color: var(--accent); }
+  .btn-nav {
+    background: var(--accent); color: var(--bg) !important;
+    padding: 0.45rem 1.2rem; border-radius: 6px;
+    font-weight: 700; font-size: 0.85rem !important;
+    transition: opacity 0.2s !important;
+  }
+  .btn-nav:hover { opacity: 0.85; }
+
+  /* PAGE SYSTEM */
+  .page { display: none; }
+  .page.active { display: block; }
+
+  /* ========= HOME PAGE ========= */
+  #page-home {
+    padding-top: 64px;
+  }
+
+  .hero {
+    min-height: 100vh;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    text-align: center;
+    padding: 4rem 2rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse 80% 60% at 50% 30%, rgba(232,201,122,0.06) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .hero-badge {
+    display: inline-block;
+    border: 1px solid var(--border);
+    background: rgba(232,201,122,0.08);
+    color: var(--accent);
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 0.4rem 1.2rem;
+    border-radius: 100px;
+    margin-bottom: 2rem;
+  }
+
+  .hero h1 {
+    font-family: 'Frank Ruhl Libre', serif;
+    font-size: clamp(2.8rem, 7vw, 5.5rem);
+    font-weight: 900;
+    line-height: 1.05;
+    margin-bottom: 1.5rem;
+    color: var(--text);
+  }
+
+  .hero h1 span { color: var(--accent); }
+
+  .hero p {
+    font-size: 1.15rem;
+    color: var(--text2);
+    max-width: 580px;
+    line-height: 1.75;
+    margin-bottom: 2.5rem;
+  }
+
+  .hero-cta {
+    display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center;
+  }
+
+  .btn-primary {
+    background: var(--accent);
+    color: var(--bg);
+    border: none;
+    padding: 0.9rem 2.2rem;
+    border-radius: 8px;
+    font-family: 'Assistant', sans-serif;
+    font-size: 1rem;
+    font-weight: 800;
+    cursor: pointer;
+    transition: transform 0.15s, opacity 0.2s;
+    text-decoration: none;
+    display: inline-block;
+  }
+  .btn-primary:hover { opacity: 0.88; transform: translateY(-1px); }
+
+  .btn-secondary {
+    background: transparent;
+    color: var(--text);
+    border: 1px solid rgba(255,255,255,0.15);
+    padding: 0.9rem 2.2rem;
+    border-radius: 8px;
+    font-family: 'Assistant', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: border-color 0.2s, color 0.2s;
+  }
+  .btn-secondary:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* STATS BAR */
+  .stats-bar {
+    display: flex; justify-content: center; gap: 0; flex-wrap: wrap;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    background: var(--bg2);
+    padding: 2rem 1rem;
+  }
+  .stat-item {
+    flex: 1; min-width: 180px;
+    text-align: center;
+    padding: 1rem 2rem;
+    border-left: 1px solid var(--border);
+  }
+  .stat-item:last-child { border-left: none; }
+  .stat-num {
+    font-family: 'Frank Ruhl Libre', serif;
+    font-size: 2.4rem;
+    font-weight: 700;
+    color: var(--accent);
+    display: block;
+  }
+  .stat-label {
+    font-size: 0.82rem;
+    color: var(--text2);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-top: 0.2rem;
+  }
+
+  /* SECTION STYLES */
+  .section {
+    padding: 5rem 2rem;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+  .section-tag {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--accent);
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+  }
+  .section-title {
+    font-family: 'Frank Ruhl Libre', serif;
+    font-size: clamp(1.8rem, 4vw, 2.8rem);
+    font-weight: 700;
+    margin-bottom: 1rem;
+    line-height: 1.2;
+  }
+  .section-sub {
+    color: var(--text2);
+    font-size: 1.05rem;
+    line-height: 1.7;
+    max-width: 600px;
+    margin-bottom: 3rem;
+  }
+
+  /* WHY SECTION */
+  .why-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+  }
+  .why-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.75rem;
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.2s;
+  }
+  .why-card:hover { border-color: rgba(232,201,122,0.35); }
+  .why-card::before {
+    content: '';
+    position: absolute; top:0; right:0;
+    width: 60px; height: 60px;
+    background: radial-gradient(circle at top right, rgba(232,201,122,0.08), transparent 70%);
+  }
+  .why-icon {
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+  }
+  .why-card h3 {
+    font-size: 1.05rem;
+    font-weight: 700;
+    margin-bottom: 0.6rem;
+    color: var(--text);
+  }
+  .why-card p {
+    color: var(--text2);
+    font-size: 0.9rem;
+    line-height: 1.6;
+  }
+
+  /* STEPS SECTION */
+  .steps-section { background: var(--bg2); }
+  .steps-wrapper { max-width: 1100px; margin: 0 auto; padding: 5rem 2rem; }
+  .steps-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+  }
+  .step-card {
+    background: var(--bg2);
+    padding: 1.5rem;
+    transition: background 0.2s;
+    cursor: pointer;
+  }
+  .step-card:hover { background: var(--bg3); }
+  .step-num {
+    font-family: 'Frank Ruhl Libre', serif;
+    font-size: 2rem;
+    font-weight: 900;
+    color: var(--accent);
+    opacity: 0.6;
+    display: block;
+    margin-bottom: 0.5rem;
+  }
+  .step-card h3 { font-size: 0.95rem; font-weight: 700; margin-bottom: 0.4rem; }
+  .step-card p { font-size: 0.82rem; color: var(--text2); line-height: 1.5; }
+
+  /* TESTIMONIALS */
+  .testimonials-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+  }
+  .testimonial-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.75rem;
+  }
+  .testimonial-card p {
+    color: var(--text2);
+    font-size: 0.95rem;
+    line-height: 1.7;
+    margin-bottom: 1.25rem;
+    font-style: italic;
+  }
+  .testimonial-author {
+    display: flex; align-items: center; gap: 0.75rem;
+  }
+  .t-avatar {
+    width: 40px; height: 40px; border-radius: 50%;
+    background: var(--bg3);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.1rem;
+  }
+  .t-name { font-size: 0.88rem; font-weight: 700; }
+  .t-meta { font-size: 0.78rem; color: var(--text3); }
+  .stars { color: var(--accent); font-size: 0.85rem; margin-bottom: 0.75rem; }
+
+  /* CTA SECTION */
+  .cta-section {
+    background: var(--bg2);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    text-align: center;
+    padding: 5rem 2rem;
+  }
+
+  /* FOOTER */
+  footer {
+    background: var(--bg);
+    border-top: 1px solid var(--border);
+    padding: 2rem;
+    text-align: center;
+    color: var(--text3);
+    font-size: 0.82rem;
+  }
+
+  /* ========= AUTH MODAL ========= */
+  .modal-overlay {
+    display: none;
+    position: fixed; inset: 0; z-index: 1000;
+    background: rgba(0,0,0,0.7);
+    align-items: center; justify-content: center;
+    padding: 1rem;
+  }
+  .modal-overlay.open { display: flex; }
+  .modal {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 2.5rem;
+    width: 100%; max-width: 440px;
+    position: relative;
+  }
+  .modal h2 {
+    font-family: 'Frank Ruhl Libre', serif;
+    font-size: 1.6rem;
+    margin-bottom: 0.4rem;
+  }
+  .modal-sub { color: var(--text2); font-size: 0.9rem; margin-bottom: 1.75rem; }
+  .modal-close {
+    position: absolute; top: 1rem; left: 1rem;
+    background: none; border: none; color: var(--text2);
+    font-size: 1.2rem; cursor: pointer;
+  }
+  .form-group { margin-bottom: 1.1rem; }
+  .form-group label { display: block; font-size: 0.85rem; color: var(--text2); margin-bottom: 0.4rem; font-weight: 600; }
+  .form-group input, .form-group select {
+    width: 100%;
+    background: var(--bg3);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+    color: var(--text);
+    font-family: 'Assistant', sans-serif;
+    font-size: 0.95rem;
+    outline: none;
+    direction: rtl;
+    transition: border-color 0.2s;
+  }
+  .form-group input:focus { border-color: var(--accent); }
+  .modal-switch { text-align: center; font-size: 0.85rem; color: var(--text2); margin-top: 1rem; }
+  .modal-switch a { color: var(--accent); cursor: pointer; text-decoration: none; }
+  .form-error { color: var(--danger); font-size: 0.82rem; margin-top: 0.3rem; display: none; }
+
+  /* ========= DASHBOARD ========= */
+  #page-dashboard { padding-top: 64px; min-height: 100vh; }
+  .dashboard-inner { max-width: 1100px; margin: 0 auto; padding: 3rem 2rem; }
+
+  .dash-header {
+    display: flex; align-items: flex-start; justify-content: space-between; flex-wrap: wrap; gap: 1rem;
+    margin-bottom: 2.5rem;
+  }
+  .dash-greeting { font-size: 0.85rem; color: var(--text2); margin-bottom: 0.3rem; }
+  .dash-greeting strong { color: var(--accent); }
+  .dash-title { font-family: 'Frank Ruhl Libre', serif; font-size: 1.8rem; }
+
+  .btn-danger-sm {
+    background: transparent;
+    border: 1px solid rgba(224,85,85,0.4);
+    color: var(--danger);
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    font-family: 'Assistant', sans-serif;
+    font-size: 0.82rem;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .btn-danger-sm:hover { background: rgba(224,85,85,0.08); }
+
+  /* PROGRESS RING */
+  .progress-section {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+  }
+  @media(max-width:700px) { .progress-section { grid-template-columns: 1fr; } }
+
+  .progress-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.75rem;
+    text-align: center;
+  }
+  .ring-wrap { position: relative; width: 120px; height: 120px; margin: 0 auto 1rem; }
+  .ring-svg { transform: rotate(-90deg); }
+  .ring-bg { fill: none; stroke: rgba(255,255,255,0.06); stroke-width: 8; }
+  .ring-fill { fill: none; stroke: var(--accent); stroke-width: 8; stroke-linecap: round; transition: stroke-dashoffset 1s ease; }
+  .ring-center {
+    position: absolute; inset: 0;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+  }
+  .ring-days {
+    font-family: 'Frank Ruhl Libre', serif;
+    font-size: 2rem; font-weight: 900; line-height: 1;
+    color: var(--accent);
+  }
+  .ring-label { font-size: 0.7rem; color: var(--text3); text-transform: uppercase; letter-spacing: 0.1em; }
+  .progress-card h3 { font-size: 0.9rem; font-weight: 700; margin-bottom: 0.3rem; }
+  .progress-card p { font-size: 0.82rem; color: var(--text2); }
+
+  .stat-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.75rem;
+    display: flex; flex-direction: column; justify-content: space-between;
+  }
+  .stat-card .big-num {
+    font-family: 'Frank Ruhl Libre', serif;
+    font-size: 2.8rem; font-weight: 700;
+    color: var(--text); line-height: 1;
+    margin-bottom: 0.5rem;
+  }
+  .big-num.green { color: var(--success); }
+  .big-num.amber { color: var(--accent); }
+  .stat-card .stat-desc { font-size: 0.85rem; color: var(--text2); }
+  .stat-card .stat-label-top { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text3); margin-bottom: 0.75rem; }
+
+  /* STEPS CHECKLIST */
+  .steps-dash-section { margin-bottom: 2rem; }
+  .steps-dash-section h2 { font-family: 'Frank Ruhl Libre', serif; font-size: 1.3rem; margin-bottom: 1.2rem; }
+  .step-check-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 0.75rem; }
+
+  .step-check {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1rem 1.25rem;
+    display: flex; align-items: center; gap: 0.75rem;
+    cursor: pointer;
+    transition: border-color 0.2s, background 0.2s;
+  }
+  .step-check.done { border-color: rgba(76,175,125,0.4); background: rgba(76,175,125,0.05); }
+  .step-check-box {
+    width: 22px; height: 22px; border-radius: 50%;
+    border: 2px solid var(--text3);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; font-size: 0.7rem; color: transparent;
+    transition: all 0.2s;
+  }
+  .step-check.done .step-check-box {
+    background: var(--success); border-color: var(--success); color: white;
+  }
+  .step-check-text { font-size: 0.88rem; font-weight: 600; }
+  .step-check-sub { font-size: 0.78rem; color: var(--text2); }
+
+  /* DAILY LOG */
+  .daily-section { margin-bottom: 2rem; }
+  .daily-section h2 { font-family: 'Frank Ruhl Libre', serif; font-size: 1.3rem; margin-bottom: 1.2rem; }
+  .day-grid {
+    display: flex; gap: 6px; flex-wrap: wrap;
+  }
+  .day-dot {
+    width: 32px; height: 32px; border-radius: 6px;
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.72rem; color: var(--text3);
+    cursor: pointer; transition: all 0.15s;
+    font-weight: 600;
+  }
+  .day-dot.done { background: var(--success); border-color: var(--success); color: white; }
+  .day-dot.today { border-color: var(--accent); color: var(--accent); }
+  .day-dot.relapse { background: var(--danger); border-color: var(--danger); color: white; }
+
+  /* TIPS */
+  .tip-card {
+    background: linear-gradient(135deg, rgba(232,201,122,0.08), rgba(232,201,122,0.02));
+    border: 1px solid rgba(232,201,122,0.25);
+    border-radius: var(--radius);
+    padding: 1.5rem 1.75rem;
+    margin-bottom: 2rem;
+    display: flex; gap: 1rem; align-items: flex-start;
+  }
+  .tip-icon { font-size: 1.5rem; flex-shrink: 0; }
+  .tip-label { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--accent); font-weight: 700; margin-bottom: 0.4rem; }
+  .tip-text { font-size: 0.95rem; line-height: 1.6; color: var(--text2); }
+
+  /* RELAPSE BUTTON */
+  .action-row { display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 2rem; }
+  .btn-success {
+    background: var(--success); color: white; border: none;
+    padding: 0.75rem 1.75rem; border-radius: 8px;
+    font-family: 'Assistant', sans-serif; font-size: 0.95rem; font-weight: 700;
+    cursor: pointer; transition: opacity 0.2s;
+  }
+  .btn-success:hover { opacity: 0.85; }
+  .btn-relapse {
+    background: transparent; color: var(--danger);
+    border: 1px solid rgba(224,85,85,0.35);
+    padding: 0.75rem 1.75rem; border-radius: 8px;
+    font-family: 'Assistant', sans-serif; font-size: 0.95rem; font-weight: 600;
+    cursor: pointer; transition: background 0.2s;
+  }
+  .btn-relapse:hover { background: rgba(224,85,85,0.08); }
+
+  /* EMAIL MODAL */
+  .email-section {
+    background: var(--bg2); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 1.5rem 1.75rem; margin-bottom: 2rem;
+  }
+  .email-section h3 { font-size: 1rem; font-weight: 700; margin-bottom: 0.5rem; }
+  .email-section p { font-size: 0.85rem; color: var(--text2); margin-bottom: 1rem; }
+  .email-row { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+  .email-row input {
+    flex: 1; min-width: 220px;
+    background: var(--bg3); border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 8px; padding: 0.7rem 1rem;
+    color: var(--text); font-family: 'Assistant', sans-serif; font-size: 0.9rem;
+    outline: none; direction: rtl;
+  }
+
+  /* ========= ADMIN ========= */
+  #page-admin { padding-top: 64px; min-height: 100vh; }
+  .admin-inner { max-width: 1200px; margin: 0 auto; padding: 3rem 2rem; }
+  .admin-title { font-family: 'Frank Ruhl Libre', serif; font-size: 2rem; margin-bottom: 0.4rem; }
+  .admin-sub { color: var(--text2); font-size: 0.9rem; margin-bottom: 2.5rem; }
+
+  .admin-tabs { display: flex; gap: 0; border-bottom: 1px solid var(--border); margin-bottom: 2rem; }
+  .admin-tab {
+    padding: 0.75rem 1.5rem; font-size: 0.88rem; font-weight: 600;
+    color: var(--text2); cursor: pointer; border-bottom: 2px solid transparent;
+    transition: all 0.2s; background: none; border-top: none; border-right: none; border-left: none;
+    font-family: 'Assistant', sans-serif;
+  }
+  .admin-tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+
+  .admin-panel { display: none; }
+  .admin-panel.active { display: block; }
+
+  .users-table { width: 100%; border-collapse: collapse; }
+  .users-table th, .users-table td {
+    text-align: right; padding: 0.85rem 1rem;
+    border-bottom: 1px solid var(--border); font-size: 0.88rem;
+  }
+  .users-table th { color: var(--text3); font-weight: 700; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.08em; }
+  .users-table tr:hover td { background: var(--bg2); }
+
+  .badge {
+    display: inline-block; padding: 0.2rem 0.6rem;
+    border-radius: 4px; font-size: 0.75rem; font-weight: 700;
+  }
+  .badge-green { background: rgba(76,175,125,0.15); color: var(--success); }
+  .badge-amber { background: rgba(232,201,122,0.15); color: var(--accent); }
+  .badge-red { background: rgba(224,85,85,0.15); color: var(--danger); }
+
+  .tip-editor-list { display: flex; flex-direction: column; gap: 1rem; }
+  .tip-editor-row {
+    background: var(--bg2); border: 1px solid var(--border);
+    border-radius: 8px; padding: 1.25rem;
+  }
+  .tip-editor-row label { font-size: 0.8rem; color: var(--text2); display: block; margin-bottom: 0.4rem; }
+  .tip-editor-row textarea {
+    width: 100%; background: var(--bg3); border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 6px; padding: 0.75rem; color: var(--text);
+    font-family: 'Assistant', sans-serif; font-size: 0.9rem; resize: vertical;
+    min-height: 70px; outline: none; direction: rtl;
+    transition: border-color 0.2s;
+  }
+  .tip-editor-row textarea:focus { border-color: var(--accent); }
+
+  .admin-stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1rem; margin-bottom: 2rem; }
+  .admin-stat-card {
+    background: var(--bg2); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 1.25rem;
+  }
+  .admin-stat-card .asc-num {
+    font-family: 'Frank Ruhl Libre', serif; font-size: 2rem; font-weight: 700;
+    color: var(--accent); line-height: 1;
+  }
+  .admin-stat-card .asc-label { font-size: 0.78rem; color: var(--text2); margin-top: 0.3rem; }
+
+  .btn-sm {
+    background: var(--bg3); border: 1px solid var(--border);
+    color: var(--text2); padding: 0.35rem 0.85rem;
+    border-radius: 6px; font-size: 0.78rem; cursor: pointer;
+    font-family: 'Assistant', sans-serif; transition: all 0.2s;
+  }
+  .btn-sm:hover { color: var(--accent); border-color: rgba(232,201,122,0.3); }
+
+  /* Toast */
+  .toast {
+    position: fixed; bottom: 2rem; right: 50%; transform: translateX(50%);
+    background: var(--success); color: white;
+    padding: 0.75rem 1.5rem; border-radius: 8px;
+    font-size: 0.9rem; font-weight: 600;
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.3s;
+    z-index: 9999;
+  }
+  .toast.show { opacity: 1; }
+
+  /* Responsive */
+  @media(max-width: 600px) {
+    .nav-links { gap: 0.75rem; }
+    .progress-section { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="#" onclick="showPage('home')">✦ חופשי</a>
+  <div class="nav-links" id="nav-links">
+    <a onclick="showPage('home')">בית</a>
+    <a onclick="showPage('home'); scrollToSteps()">12 הצעדים</a>
+    <a id="nav-login-btn" onclick="openModal('login')" class="btn-nav">התחבר / הרשם</a>
+    <a id="nav-dash-btn" onclick="showPage('dashboard')" style="display:none">לוח שלי</a>
+    <a id="nav-admin-btn" onclick="showPage('admin')" style="display:none">אדמין</a>
+    <a id="nav-logout-btn" onclick="logout()" style="display:none; color:var(--text3)">התנתק</a>
+  </div>
+</nav>
+
+<!-- =================== HOME PAGE =================== -->
+<div id="page-home" class="page active">
+
+  <section class="hero">
+    <div class="hero-badge">אתגר 30 יום</div>
+    <h1>הגיע הזמן<br>להיות <span>חופשי</span></h1>
+    <p>פורנוגרפיה משפיעה על המוח, הקשרים הרגשיים, ויכולת ליהנות מחיים אמיתיים. אנחנו כאן כדי לעזור לך לפרוץ את המעגל — צעד אחד ביום.</p>
+    <div class="hero-cta">
+      <button class="btn-primary" onclick="openModal('register')">התחל את האתגר היום ←</button>
+      <button class="btn-secondary" onclick="showPage('home'); setTimeout(scrollToWhy, 100)">למה זה משנה?</button>
+    </div>
+  </section>
+
+  <div class="stats-bar">
+    <div class="stat-item">
+      <span class="stat-num" id="counter-users">0</span>
+      <div class="stat-label">משתמשים פעילים</div>
+    </div>
+    <div class="stat-item">
+      <span class="stat-num" id="counter-days">0</span>
+      <div class="stat-label">ימי גמילה מוצלחים</div>
+    </div>
+    <div class="stat-item">
+      <span class="stat-num">12</span>
+      <div class="stat-label">צעדים לחופש</div>
+    </div>
+    <div class="stat-item">
+      <span class="stat-num">30</span>
+      <div class="stat-label">ימי האתגר</div>
+    </div>
+  </div>
+
+  <!-- WHY SECTION -->
+  <section class="section" id="why-section">
+    <div class="section-tag">הסכנה</div>
+    <h2 class="section-title">למה פורנוגרפיה מזיקה?</h2>
+    <p class="section-sub">מחקרים עדכניים מראים שפורנוגרפיה משפיעה על המוח בדומה לסמים — ויוצרת תלות אמיתית.</p>
+    <div class="why-grid">
+      <div class="why-card">
+        <div class="why-icon">🧠</div>
+        <h3>שינוי במוח</h3>
+        <p>צפייה כרונית גורמת ל"דה-סנסיטיזציה" — המוח דורש גירוי חזק יותר בכל פעם. מסלולי הדופמין מוחלשים, ומשפיעים על מוטיבציה ושמחה בחיי היומיום.</p>
+      </div>
+      <div class="why-card">
+        <div class="why-icon">💔</div>
+        <h3>פגיעה בקשרים אישיים</h3>
+        <p>ציפיות לא ריאליות, ירידה בחשק לאינטימיות אמיתית, ובעיות תפקוד מיני — אלו תסמינים מוכרים. מחקרים מקשרים בין שימוש לבין ירידה בשביעות רצון מזוגיות.</p>
+      </div>
+      <div class="why-card">
+        <div class="why-icon">😶</div>
+        <h3>ריקנות רגשית</h3>
+        <p>פורנוגרפיה משמשת לעיתים כרגולציה רגשית — בריחה מלחץ, שעמום, בדידות. זה מונע פיתוח כישורי התמודדות בריאים ושומר על המעגל.</p>
+      </div>
+      <div class="why-card">
+        <div class="why-icon">📉</div>
+        <h3>פגיעה בביצועים</h3>
+        <p>ריכוז, פרודוקטיביות, ביטחון עצמי — כולם מושפעים. "No Fap" ו"NoFap" מדווחים על שיפור עצום בסיום הגמילה.</p>
+      </div>
+      <div class="why-card">
+        <div class="why-icon">🔒</div>
+        <h3>לכידות במעגל</h3>
+        <p>הבושה, הסוד, ואז ה"חלקה" — יוצרים מעגל שקשה לשבור לבד. הפרעת שימוש בפורנוגרפיה מוכרת על ידי ה-WHO כהפרעה התנהגותית.</p>
+      </div>
+      <div class="why-card">
+        <div class="why-icon">✨</div>
+        <h3>הצד השני</h3>
+        <p>גמילה מוצלחת קשורה לשיפור במצב הרוח, ביטחון עצמי, מערכות יחסים עמוקות יותר, ויצירתיות. 30 יום יכולים לשנות הכל.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 12 STEPS -->
+  <section class="steps-section" id="steps-section">
+    <div class="steps-wrapper">
+      <div class="section-tag">התכנית</div>
+      <h2 class="section-title">12 הצעדים לחופש</h2>
+      <p class="section-sub">תכנית מבוססת על גישות טיפוליות מוכחות — CBT, מיינדפולנס, ותמיכה חברתית.</p>
+      <div class="steps-grid">
+        <div class="step-card">
+          <span class="step-num">01</span>
+          <h3>הכרה בבעיה</h3>
+          <p>הודאה כנה שהשימוש יצא משליטה וגורם נזק.</p>
+        </div>
+        <div class="step-card">
+          <span class="step-num">02</span>
+          <h3>הגדרת הגבול</h3>
+          <p>מחליטים בדיוק מה "גמילה" אומרת עבורך ומסמנים את יום התחלה.</p>
+        </div>
+        <div class="step-card">
+          <span class="step-num">03</span>
+          <h3>הסרת גישה</h3>
+          <p>מתקינים חוסמי תוכן, מוחקים היסטוריה, מסירים אפליקציות — יוצרים חסמים פיזיים.</p>
+        </div>
+        <div class="step-card">
+          <span class="step-num">04</span>
+          <h3>זיהוי הטריגרים</h3>
+          <p>מזהים מתי ואיפה ה"דחף" הכי חזק — שעמום, לחץ, בדידות, שעות מאוחרות.</p>
+        </div>
+        <div class="step-card">
+          <span class="step-num">05</span>
+          <h3>בניית תוכנית חלופה</h3>
+          <p>לכל טריגר — תגובה חלופית. פעילות גופנית, שיחה, קריאה, מקלחת קרה.</p>
+        </div>
+        <div class="step-card">
+          <span class="step-num">06</span>
+          <h3>תמיכה חברתית</h3>
+          <p>מספרים לאדם אחד שאנחנו סומכים עליו. אחריות חברתית מכפילה סיכויי הצלחה.</p>
+        </div>
+        <div class="step-card">
+          <span class="step-num">07</span>
+          <h3>מיינדפולנס לדחפים</h3>
+          <p>לומדים לזהות את הדחף בלי לפעול לפיו — "גלישה על הגל" בלי לשבור.</p>
+        </div>
+        <div class="step-card">
+          <span class="step-num">08</span>
+          <h3>ניהול רגשות</h3>
+          <p>לומדים לזהות מה הרגש שמוביל לדחף — ולהגיב לרגש עצמו, לא לברוח ממנו.</p>
+        </div>
+        <div class="step-card">
+          <span class="step-num">09</span>
+          <h3>שגרה בריאה</h3>
+          <p>שינה מספקת, פעילות גופנית, תזונה, קשרים חברתיים — הבסיס לשחרור.</p>
+        </div>
+        <div class="step-card">
+          <span class="step-num">10</span>
+          <h3>בחינת עצמי יומית</h3>
+          <p>5 דקות לפני שינה — מה הלך טוב? מה היה קשה? ללא שיפוטיות.</p>
+        </div>
+        <div class="step-card">
+          <span class="step-num">11</span>
+          <h3>התמודדות עם נפילה</h3>
+          <p>נפילה אינה כישלון — היא חלק מהתהליך. לומדים, מתאמים, ממשיכים.</p>
+        </div>
+        <div class="step-card">
+          <span class="step-num">12</span>
+          <h3>שמירה לטווח ארוך</h3>
+          <p>30 הימים הם ההתחלה. בונים זהות חדשה שלא מוגדרת על ידי ההרגל הישן.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <section class="section">
+    <div class="section-tag">סיפורים אמיתיים</div>
+    <h2 class="section-title">מה אומרים המשתמשים</h2>
+    <p class="section-sub">אנשים שסיימו את האתגר ושיתפו את חוויתם.</p>
+    <div class="testimonials-grid">
+      <div class="testimonial-card">
+        <div class="stars">★★★★★</div>
+        <p>"לא האמנתי שאצליח. היום 47 — ימים נקיים. השינה שלי השתפרה, יש לי אנרגיה, והמערכת עם אשתי... פשוט אחרת לחלוטין."</p>
+        <div class="testimonial-author">
+          <div class="t-avatar">🙂</div>
+          <div>
+            <div class="t-name">יואב, 32</div>
+            <div class="t-meta">השלים את האתגר לפני 3 שבועות</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card">
+        <div class="stars">★★★★★</div>
+        <p>"הטיפים היומיים שקיבלתי למייל היו גורם מרכזי בהצלחה שלי. הרגשתי שמישהו מכיר אותי ואת המאבק שלי."</p>
+        <div class="testimonial-author">
+          <div class="t-avatar">😊</div>
+          <div>
+            <div class="t-name">אורי, 25</div>
+            <div class="t-meta">שבוע 3 מתוך 4</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card">
+        <div class="stars">★★★★☆</div>
+        <p>"נפלתי פעמיים לפני שסיימתי. הפלטפורמה לא נתנה לי להרגיש כישלון — אמרה 'אפס ומשיכה'. זה מה שהייתי צריך."</p>
+        <div class="testimonial-author">
+          <div class="t-avatar">🧑</div>
+          <div>
+            <div class="t-name">מיכאל, 28</div>
+            <div class="t-meta">יום 30 לפני חודש</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <div class="cta-section">
+    <div class="section-tag">מוכן?</div>
+    <h2 class="section-title">יום 1 מתחיל עכשיו</h2>
+    <p style="color:var(--text2); max-width:500px; margin: 0 auto 2rem; line-height:1.7;">ההרשמה חינמית. אין תשלום. רק הסכמה — שהחיים שלך שווים את המאמץ.</p>
+    <button class="btn-primary" onclick="openModal('register')">צור חשבון חינמי ←</button>
+  </div>
+
+  <footer>
+    <p>✦ חופשי — אתגר 30 יום לגמילה מפורנוגרפיה</p>
+    <p style="margin-top:0.5rem">האתר אינו מחליף טיפול מקצועי. במקרי מצוקה — פנה לאיש מקצוע.</p>
+  </footer>
+</div>
+
+
+<!-- =================== AUTH MODAL =================== -->
+<div class="modal-overlay" id="modal-overlay" onclick="closeModalOverlay(event)">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+
+    <!-- LOGIN -->
+    <div id="modal-login">
+      <h2>ברוך הבא בחזרה</h2>
+      <p class="modal-sub">הכנס פרטים כדי להמשיך את המסע שלך</p>
+      <div class="form-group">
+        <label>אימייל</label>
+        <input type="email" id="login-email" placeholder="you@example.com">
+      </div>
+      <div class="form-group">
+        <label>סיסמה</label>
+        <input type="password" id="login-password" placeholder="••••••••">
+      </div>
+      <p class="form-error" id="login-error">אימייל או סיסמה שגויים</p>
+      <button class="btn-primary" style="width:100%" onclick="doLogin()">כניסה</button>
+      <p class="modal-switch">עדיין אין לך חשבון? <a onclick="switchModal('register')">הירשם</a></p>
+      <p class="modal-switch" style="margin-top:0.5rem"><a onclick="switchModal('admin-login')">כניסת מנהל</a></p>
+    </div>
+
+    <!-- REGISTER -->
+    <div id="modal-register" style="display:none">
+      <h2>מתחילים את האתגר</h2>
+      <p class="modal-sub">30 יום לשינוי. הירשם כדי להתחיל.</p>
+      <div class="form-group">
+        <label>שם פרטי</label>
+        <input type="text" id="reg-name" placeholder="שמך">
+      </div>
+      <div class="form-group">
+        <label>אימייל</label>
+        <input type="email" id="reg-email" placeholder="you@example.com">
+      </div>
+      <div class="form-group">
+        <label>סיסמה</label>
+        <input type="password" id="reg-password" placeholder="לפחות 6 תווים">
+      </div>
+      <p class="form-error" id="reg-error">אימייל כבר קיים</p>
+      <button class="btn-primary" style="width:100%" onclick="doRegister()">צור חשבון ←</button>
+      <p class="modal-switch">כבר יש לך חשבון? <a onclick="switchModal('login')">התחבר</a></p>
+    </div>
+
+    <!-- ADMIN LOGIN -->
+    <div id="modal-admin-login" style="display:none">
+      <h2>כניסת מנהל</h2>
+      <p class="modal-sub">גישה לפאנל הניהול</p>
+      <div class="form-group">
+        <label>סיסמת מנהל</label>
+        <input type="password" id="admin-password" placeholder="••••••••">
+      </div>
+      <p class="form-error" id="admin-error">סיסמה שגויה</p>
+      <button class="btn-primary" style="width:100%" onclick="doAdminLogin()">כניסה</button>
+      <p class="modal-switch"><a onclick="switchModal('login')">← חזור</a></p>
+    </div>
+  </div>
+</div>
+
+
+<!-- =================== DASHBOARD =================== -->
+<div id="page-dashboard" class="page">
+  <div class="dashboard-inner">
+    <div class="dash-header">
+      <div>
+        <p class="dash-greeting">שלום, <strong id="dash-name">—</strong></p>
+        <h1 class="dash-title">לוח האתגר שלי</h1>
+      </div>
+      <button class="btn-danger-sm" onclick="confirmReset()">⟳ אפס התחלה</button>
+    </div>
+
+    <!-- TIP OF THE DAY -->
+    <div class="tip-card" id="daily-tip">
+      <div class="tip-icon">💡</div>
+      <div>
+        <div class="tip-label">טיפ יומי — יום <span id="tip-day-num">1</span></div>
+        <div class="tip-text" id="tip-text-display">טוען...</div>
+      </div>
+    </div>
+
+    <!-- PROGRESS RING + STATS -->
+    <div class="progress-section">
+      <div class="progress-card">
+        <div class="ring-wrap">
+          <svg class="ring-svg" width="120" height="120" viewBox="0 0 120 120">
+            <circle class="ring-bg" cx="60" cy="60" r="52"/>
+            <circle class="ring-fill" cx="60" cy="60" r="52" id="ring-circle"
+              stroke-dasharray="326.7"
+              stroke-dashoffset="326.7"/>
+          </svg>
+          <div class="ring-center">
+            <span class="ring-days" id="ring-days">0</span>
+            <span class="ring-label">מתוך 30</span>
+          </div>
+        </div>
+        <h3>ימים ללא פורנוגרפיה</h3>
+        <p>המשך כך — כל יום חשוב</p>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-label-top">רצף נוכחי</div>
+        <div class="big-num green" id="streak-num">0</div>
+        <div class="stat-desc">ימים ברצף מאז ההתחלה</div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-label-top">התקדמות כוללת</div>
+        <div class="big-num amber" id="percent-num">0%</div>
+        <div class="stat-desc">מהאתגר הושלם</div>
+      </div>
+    </div>
+
+    <!-- ACTION BUTTONS -->
+    <div class="action-row">
+      <button class="btn-success" onclick="markToday()">✓ סימנתי יום נוסף</button>
+      <button class="btn-relapse" onclick="reportRelapse()">⚠ דיווח על חלקה</button>
+    </div>
+
+    <!-- DAILY HEATMAP -->
+    <div class="daily-section">
+      <h2>מעקב ימים — 30 הימים</h2>
+      <div class="day-grid" id="day-grid"></div>
+      <p style="font-size:0.78rem; color:var(--text3); margin-top:0.75rem">
+        <span style="background:var(--success);display:inline-block;width:12px;height:12px;border-radius:3px;"></span> יום נקי &nbsp;
+        <span style="background:var(--danger);display:inline-block;width:12px;height:12px;border-radius:3px;"></span> נפילה &nbsp;
+        <span style="border:1px solid var(--accent);display:inline-block;width:12px;height:12px;border-radius:3px;"></span> היום
+      </p>
+    </div>
+
+    <!-- 12 STEPS CHECKLIST -->
+    <div class="steps-dash-section">
+      <h2>12 הצעדים — מעקב</h2>
+      <div class="step-check-list" id="steps-checklist"></div>
+    </div>
+
+    <!-- EMAIL TIPS -->
+    <div class="email-section">
+      <h3>📧 טיפים יומיים לאימייל</h3>
+      <p>קבל טיפ יומי לאימייל שלך — תזכורת ועידוד בדרך לחופש.</p>
+      <div class="email-row">
+        <input type="email" id="email-tips-input" placeholder="האימייל שלך">
+        <button class="btn-primary" onclick="saveEmailTips()">הרשם לטיפים</button>
+      </div>
+      <p style="font-size:0.78rem; color:var(--text3); margin-top:0.5rem">* לצורכי הדגמה — מציג את הטיפ הבא שהיה נשלח</p>
+    </div>
+
+    <!-- NEXT TIP PREVIEW -->
+    <div id="next-tip-preview" style="display:none" class="tip-card">
+      <div class="tip-icon">📬</div>
+      <div>
+        <div class="tip-label">הטיפ הבא שיישלח — יום <span id="next-tip-day">—</span></div>
+        <div class="tip-text" id="next-tip-text">—</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- =================== ADMIN =================== -->
+<div id="page-admin" class="page">
+  <div class="admin-inner">
+    <h1 class="admin-title">פאנל ניהול</h1>
+    <p class="admin-sub">ניהול משתמשים, ניטור התקדמות, ועריכת טיפים יומיים</p>
+
+    <div class="admin-stats-grid" id="admin-stats-grid"></div>
+
+    <div class="admin-tabs">
+      <button class="admin-tab active" onclick="switchAdminTab('users')">משתמשים</button>
+      <button class="admin-tab" onclick="switchAdminTab('tips')">טיפים יומיים</button>
+      <button class="admin-tab" onclick="switchAdminTab('goals')">יעדים</button>
+    </div>
+
+    <!-- USERS TAB -->
+    <div class="admin-panel active" id="admin-tab-users">
+      <table class="users-table" id="users-table">
+        <thead>
+          <tr>
+            <th>שם</th>
+            <th>אימייל</th>
+            <th>יום נוכחי</th>
+            <th>רצף</th>
+            <th>נפילות</th>
+            <th>סטטוס</th>
+            <th>פעולות</th>
+          </tr>
+        </thead>
+        <tbody id="users-tbody"></tbody>
+      </table>
+    </div>
+
+    <!-- TIPS TAB -->
+    <div class="admin-panel" id="admin-tab-tips">
+      <p style="color:var(--text2); font-size:0.88rem; margin-bottom:1.5rem">ערוך את 30 הטיפים היומיים שנשלחים למשתמשים. כל טיפ מתאים ליום מסוים באתגר.</p>
+      <div class="tip-editor-list" id="tip-editor-list"></div>
+      <button class="btn-primary" style="margin-top:1.5rem" onclick="saveTips()">שמור טיפים</button>
+    </div>
+
+    <!-- GOALS TAB -->
+    <div class="admin-panel" id="admin-tab-goals">
+      <p style="color:var(--text2); font-size:0.88rem; margin-bottom:1.5rem">הגדר יעדים ואבני דרך שמוצגים למשתמשים.</p>
+      <div id="goals-list"></div>
+      <button class="btn-primary" style="margin-top:1.5rem" onclick="saveGoals()">שמור יעדים</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// =================== DATA LAYER (localStorage) ===================
+
+const KEY_USERS = 'detox_users';
+const KEY_CURRENT = 'detox_current';
+const KEY_TIPS = 'detox_tips';
+const KEY_GOALS = 'detox_goals';
+const ADMIN_PASS = 'admin123';
+
+function getUsers() { return JSON.parse(localStorage.getItem(KEY_USERS) || '[]'); }
+function saveUsers(u) { localStorage.setItem(KEY_USERS, JSON.stringify(u)); }
+function getCurrentUser() { const id = localStorage.getItem(KEY_CURRENT); if(!id) return null; return getUsers().find(u => u.id === id) || null; }
+function updateCurrentUser(data) {
+  const users = getUsers();
+  const idx = users.findIndex(u => u.id === data.id);
+  if(idx >= 0) users[idx] = data;
+  saveUsers(users);
+}
+
+function getTips() {
+  const stored = localStorage.getItem(KEY_TIPS);
+  if(stored) return JSON.parse(stored);
+  return DEFAULT_TIPS;
+}
+function saveTipsData(t) { localStorage.setItem(KEY_TIPS, JSON.stringify(t)); }
+function getGoals() {
+  const stored = localStorage.getItem(KEY_GOALS);
+  if(stored) return JSON.parse(stored);
+  return DEFAULT_GOALS;
+}
+function saveGoalsData(g) { localStorage.setItem(KEY_GOALS, JSON.stringify(g)); }
+
+// =================== DEFAULT DATA ===================
+
+const DEFAULT_TIPS = [
+  {
+    subject: "יום 1 — ההחלטה הגדולה ביותר שקיבלת השנה",
+    body: `שלום,\n\nברוך הבא ליום הראשון של אתגר 30 הימים.\n\nהיום לא צריך לעשות הרבה — רק להבין מה קורה כאן. פורנוגרפיה פועלת על המוח בדיוק כמו סמים: כל פעם שרואים, המוח מציף בדופמין. עם הזמן, המוח "מתרגל" ודורש יותר — יותר גרפי, יותר קיצוני, יותר לעתים קרובות. זה לא חולשת אופי. זה נוירולוגיה.\n\nהצעד הראשון הוא הכי קשה — והשלמת אותו כבר עם ההרשמה.\n\n💡 משימת היום: כתוב לעצמך (נייר, טלפון, כל דבר) תשובה אחת כנה: למה אתה עושה את זה? לא "כי פורנו רע" — אלא מה אתה רוצה לחיות אחרת. זוגיות? שקט נפשי? ביטחון עצמי? שמור את התשובה — תחזור אליה בימים הקשים.\n\nאנחנו איתך,\nצוות חופשי ✦`,
+    youtube: "https://www.youtube.com/watch?v=wSF82AwSDiU"
+  },
+  {
+    subject: "יום 2 — הגל הראשון יגיע היום. הנה איך לרכוב עליו",
+    body: `שלום,\n\nיום שני. המוח שלך כבר מרגיש שמשהו השתנה, ואתה עלול לחוות דחף חזק היום — זה נורמלי לחלוטין.\n\nהנה מה שמדע אומר: דחף להשתמש הוא כמו גל. הוא עולה, מגיע לשיא — בדרך כלל 15–20 דקות — ואז יורד בעצמו. הוא לא יגדל לאינסוף. אם תשרוד את הגל, הוא ייגמר.\n\nהטכניקה נקראת "Urge Surfing" — גלישה על הדחף:\n1. שים לב שיש דחף — אל תלחם בו, פשוט שים לב\n2. שאל את עצמך: איפה זה מרגש בגוף? חזה? בטן? ראש?\n3. נשום. תצפה בתחושה כמו ענן שעובר\n4. עשה משהו פיזי — קם, שתה מים, צא החוצה 5 דקות\n\n💡 משימת היום: כשמגיע דחף — לפני שאתה עושה כל דבר, שים טיימר ל-20 דקות. צא לאוויר. ראה מה קורה.\n\nאנחנו איתך,\nצוות חופשי ✦`,
+    youtube: "https://www.youtube.com/watch?v=au4h4kqFQVA"
+  },
+  {
+    subject: "יום 3 — הגוף הוא בן הברית הכי חזק שלך",
+    body: `שלום,\n\nיום שלישי — אתה כנראה מתחיל להרגיש קצת עצבני, חסר מנוחה, או פשוט 'off'. זה חלק מהתהליך. המוח מחפש את הדופמין שהפסיק לקבל.\n\nהתרופה הכי מהירה שקיימת: פעילות גופנית.\n\nמחקרים מראים שאפילו 20–30 דקות הליכה מהירה מייצרות גל של דופמין, סרוטונין ואנדורפינים — ממש כמו תרופה, אבל בחינם ובלי תופעות לוואי. בנוסף, עייפות גופנית היא מכשול טבעי לדחפים בערב.\n\nלא חייבים חדר כושר. לא חייבים שעה שלמה. מספיק:\n• 20 דקות הליכה מהירה בחוץ\n• 30 שכיבות סמיכה + 30 כפיפות בטן\n• ריצה קלה של 10 דקות\n\n💡 משימת היום: זוז עכשיו. לא מחר. 20 דקות. זה ישנה את מצב הרוח שלך להיום ולמחר.\n\nאנחנו איתך,\nצוות חופשי ✦`,
+    youtube: "https://www.youtube.com/watch?v=BHY0FxzoKZE"
+  },
+  {
+    subject: "יום 4 — מפת הסיכון: מתי ואיפה אתה הכי פגיע?",
+    body: `שלום,\n\nיום רביעי. היום נעשה עבודה חשובה: לזהות את 'שעות הסיכון' שלך.\n\nרוב האנשים נופלים לא באקראי — יש להם דפוס ברור. לרוב מדובר ב:\n• שעות מאוחרות (23:00–02:00) לבד בחדר\n• לאחר יום מלחיץ בעבודה\n• כשמרגישים בדידות או שעמום\n• מיד עם ההתעוררות לפני שהיום 'מתחיל'\n\nהמטרה שלנו היום היא לבנות חומת הגנה לפני שהגל מגיע.\n\n💡 משימת היום: קח נייר וכתוב:\n1. מתי ביום אתה הכי פגיע? (שעה, מצב רוח, מיקום)\n2. מה טריגר אחד שמוביל לדחף? (בדידות? שעמום? מתח?)\n3. מה תעשה בפעם הבאה שזה קורה? (טלפון לחבר, מקלחת קרה, יציאה מהחדר)\n\nהתכנית לא חייבת להיות מושלמת. היא רק צריכה להיות מוכנה.\n\nאנחנו איתך,\nצוות חופשי ✦`,
+    youtube: "https://www.youtube.com/watch?v=Aw1oLtuJOTQ"
+  },
+  {
+    subject: "יום 5 — הסרת הדלק: חוסמים, מחיקות, ואמצעי מניעה",
+    body: `שלום,\n\nיום חמישי. עד עכשיו עבדנו על המחשבה — היום נעבוד על הסביבה.\n\nאחת הטעויות הנפוצות היא לנסות להתמודד עם הדחף בכוח רצון בלבד. מחקרים מראים שכוח רצון הוא משאב מוגבל שנגמר. מה שעובד הרבה יותר: הסרת הגישה.\n\nמה לעשות היום:\n✦ מחק היסטוריית גלישה ומועדפים\n✦ התקן חוסם תוכן (מומלץ: BlockSite, Cold Turkey, Net Nanny)\n✦ הפעל סינון SafeSearch בגוגל\n✦ אם הבעיה באפליקציות — מחק אותן\n✦ שקול לתת לאדם סומך סיסמה לנתב הביתי\n\nחשוב: אלו לא סימני חולשה. כל ספורטאי מקצועי מסיר ג'אנק פוד מהבית. זו אסטרטגיה, לא כניעה.\n\n💡 משימת היום: עשה לפחות 3 מהפעולות הרשומות למעלה עכשיו.\n\nאנחנו איתך,\nצוות חופשי ✦`,
+    youtube: "https://www.youtube.com/watch?v=k6LB9wsGEOk"
+  },
+  {
+    subject: "יום 6 — לא לבד: למה אחריות חברתית משנה הכל",
+    body: `שלום,\n\nיום שישי. היום נדבר על אחד הכלים הכי יעילים וגם הכי מפחידים: לספר למישהו.\n\nמחקר מ-American Society of Training and Development מצא שסיכויי ההצלחה במטרות עולים ל-95% כאשר יש אדם ספציפי שאנחנו מתחייבים אליו. 95%. זה מספר מדהים.\n\nאתה לא חייב לספר הכל. לא חייב להיות מדויק. מספיק לאמר:\n"אני עובד על שינוי בהרגלים שלי. אשמח שתשאל אותי איך הולך מדי שבוע."\n\nמי יכול להיות? חבר קרוב, אח, בן זוג, פסיכולוג, קהילת NoFap אנונימית באינטרנט — כל אחד שגורם לך להרגיש אחריות.\n\n💡 משימת היום: שלח הודעה אחת, לאדם אחד. זה הכל.\n\nאנחנו איתך,\nצוות חופשי ✦`,
+    youtube: "https://www.youtube.com/watch?v=V74AxCqOTvg"
+  },
+  {
+    subject: "🏆 יום 7 — שבוע שלם! הנה מה שקרה במוח שלך",
+    body: `שלום,\n\nשבוע שלם. זה לא קטן.\n\nהנה מה שקרה במוח שלך ב-7 הימים האחרונים:\n\n• ימים 1–3: המוח ביצע "ניקוי" — חשתי אולי עצבנות, שעמום, קושי להתרכז. זה הגוף מחפש את הדופמין הישן.\n• ימים 4–6: מסלולי הדופמין מתחילים להרגע. ייתכן שהרגשת קצת יותר רגוע.\n• יום 7: המוח מתחיל לבנות קשרים עצביים חדשים — המסלול החדש מתחיל להתחזק.\n\nמחקרים מראים שב-NoFap ובגמילה מפורנוגרפיה, שבוע אחד מסמן נקודת מפנה ראשונה: הדחפים מתחילים להיות ניתנים לניהול יותר.\n\n💡 משימת היום: חגוג. ממש. קנה לעצמך משהו קטן, קח ארוחה טובה, ספר למישהו. אתה מגיע.\n\nשבוע טוב,\nצוות חופשי ✦`,
+    youtube: "https://www.youtube.com/watch?v=SEfs5VA4hH8"
+  },
+  {
+    subject: "יום 8 — השבוע השני מתחיל: הסכנה הנסתרת",
+    body: `שלום,\n\nיום 8. ברוך הבא לשבוע השני — שנחשב לאחד הקשים יותר עבור אנשים רבים.\n\nלמה? כי בשבוע הראשון היה אדרנלין של התחלה חדשה. עכשיו, המציאות מתיישבת. הימים נראים רגילים, ואולי יש תחושה של 'למה בכלל?' — זה מה שאנשים קוראים לו "flatline": תקופה בה לא מרגישים הרבה. זה נורמלי, וזה זמני.\n\nהסכנה: להרגיש שהדחף חלף, ו"פעם אחת לא ישנה". ישנה.\n\nהמוח שלך בשלב מאוד עדין כרגע — הוא לא סיים לשבנות את המסלולים החדשים. פעם אחת יכולה להחזיר שבועות אחורה.\n\n💡 משימת היום: חזור לרשימה שכתבת ביום 4 — מה הטריגרים שלך. האם יש אחד שהתממש השבוע? מה עשית?\n\nאנחנו איתך,\nצוות חופשי ✦`,
+    youtube: "https://www.youtube.com/watch?v=gBA_KMKFmvs"
+  },
+  {
+    subject: "יום 9 — מיינדפולנס: הכלי שאף אחד לא מלמד בבית ספר",
+    body: `שלום,\n\nיום 9. היום נלמד את הכלי הכי חזק לניהול דחפים: מיינדפולנס.\n\nלא מדיטציה ניו-אייג'ית. אנחנו מדברים על טכניקה קוגניטיבית מבוססת מחקר, שמשמשת בטיפול CBT ו-ACT לטיפול בהתמכרויות.\n\nהרעיון: אנחנו לא חייבים לפעול על כל מחשבה שיש לנו. מחשבה היא אירוע נפשי — לא פקודה.\n\nתרגיל ה-STOP:\nS — Stop. עצור.\nT — Take a breath. קח נשימה.\nO — Observe. מה אני מרגיש עכשיו? איפה בגוף?\nP — Proceed. המשך — עם מודעות, לא בתגובה אוטומטית.\n\n💡 משימת היום: הפעל את תרגיל ה-STOP פעם אחת היום — לאו דווקא בזמן דחף. פשוט בזמן אקראי, כדי להתרגל.\n\nאנחנו איתך,\nצוות חופשי ✦`,
+    youtube: "https://www.youtube.com/watch?v=w6T02g5hnT4"
+  },
+  {
+    subject: "🔟 יום 10 — שליש מהדרך! מה השתנה?",
+    body: `שלום,\n\n10 ימים. שליש מהדרך.\n\nזה הזמן לעצור ולבדוק: מה השתנה?\n\nאנשים שמדווחים לאחר 10 ימים ב-NoFap מציינים בדרך כלל:\n✦ שינה טובה יותר\n✦ יותר אנרגיה בבוקר\n✦ קצת יותר ריכוז\n✦ פחות 'ערפל מוחי'\n✦ אולי קצת יותר ביטחון עצמי\n\nחלקם לא מרגישים עדיין שינוי גדול — וזה בסדר גמור. כל אחד בקצב שלו.\n\n💡 משימת היום: כתוב 3 דברים קטנים שהשתפרו מאז שהתחלת. אפילו "ישנתי שעה יותר" עולה לרשימה. ניהול ציפיות חיובי הוא מנוע מוטיבציה.\n\nאנחנו גאים בך,\nצוות חופשי ✦`,
+    youtube: "https://www.youtube.com/watch?v=SEfs5VA4hH8"
+  },
+  {
+    subject: "יום 11 — השינה: הנשק הסודי של הגמילה",
+    body: `שלום,\n\nיום 11. נדבר היום על משהו שנשמע פשוט ומוזנח — שינה.\n\nחוסר שינה הוא אחד הגורמים המרכזיים לנפילות בגמילה. מחקרים מראים ש:\n• חוסר שינה מוריד את הפעילות בקליפת המוח הקדמית — האזור שאחראי לשליטה עצמית\n• הוא מגביר את הדחפים ומחליש את הרצון לעמוד בהם\n• אחרי לילה ללא שינה, אנשים נוטים ב-50% יותר לבחירות אימפולסיביות\n\nמה עוזר:\n• שעת שינה קבועה (גם בסופ"ש)\n• ללא מסכים 45 דקות לפני שינה\n• החדר קריר וחשוך\n• לא לשכב ערים במיטה — מיטה = שינה בלבד\n\n💡 משימת היום: קבע לעצמך שעת כיבוי מסכים הערב. ועמוד בה.\n\nאנחנו איתך,\nצוות חופשי ✦`,
+    youtube: "https://www.youtube.com/watch?v=5MuIMqhT8pQ"
+  },
+  {
+    subject: "יום 12 — הריק שנוצר: איך למלא אותו נכון?",
+    body: `שלום,\n\nיום 12. שאלה חשובה היום: מה אתה עושה עם הזמן שהתפנה?\n\nאנשים רבים שמתחילים גמילה מגלים שהיה להם "חור" בשגרה — 30 דקות, שעה, שעתיים ביום שהיו מוקדשות להרגל הישן. הריק הזה מסוכן אם לא ממלאים אותו.\n\nאבל הוא גם הזדמנות ענקית.\n\nרעיונות למה למלא את הזמן:\n✦ לימוד כלי נגינה (גיטרה, פסנתר)\n✦ קורס אונליין בנושא שמעניין אותך\n✦ ריצה / שחייה / אימון גופני\n✦ בישול — לומדים מתכון חדש בכל שבוע\n✦ קריאה — 20 דקות ביום = 12 ספרים בשנה\n✦ פרויקט יצירתי (כתיבה, צילום, ציור)\n\nהמפתח: משהו שמייצר הישגים ומשביע סיפוק — דופמין אמיתי.\n\n💡 משימת היום: בחר פעילות אחת ותתחיל אותה השבוע.\n\nאנחנו איתך,\nצוות חופשי ✦`,
+    youtube: "https://www.youtube.com/watch?v=75d_29QWELk"
+  },
+  {
+    subject: "יום 13 — חזור לשורש: למה אתה עושה את זה?",
+    body: `שלום,\n\nיום 13. יום לפני שבועיים — ויום שדורש מאמץ מיוחד של מודעות.\n\nאחת הסכנות בשלב זה היא שהמוטיבציה ההתחלתית דועכת. ה"כאב" הראשוני שגרם לך להחליט כבר לא חד כמו שהיה. ואז קל לשכוח למה.\n\nחזור לתשובה שכתבת ביום הראשון. אם לא כתבת — עכשיו הזמן.\n\nשאל את עצמך:\n• מה ההשפעה של ההרגל הזה על מערכות היחסים שלי?\n• האם אני מרגיש שאני חי את החיים שאני רוצה?\n• מה גרסת ה"אני" של עוד שנה — שהמשיך — נראית?\n\nהמטרה האישית שלך — לא הכללית — היא הדלק שמחזיק אותך.\n\n💡 משימת היום: כתוב בשורה אחת: "אני עושה את זה כי ___." שמור אותה כוול פייפר בטלפון.\n\nאנחנו איתך,\nצוות חופשי ✦`,
+    youtube: "https://www.youtube.com/watch?v=mNeXuCYiE0U"
+  },
+  {
+    subject: "🎉 יום 14 — שבועיים! המוח שלך עבר שינוי מדיד",
+    body: `שלום,\n\n14 ימים. שבועיים נקיים.\n\nהנה מה שמדע יודע על המוח לאחר שבועיים ללא פורנוגרפיה:\n\n• רמות הדופמין מתחילות לחזור לאיזון — הנאה מדברים קטנים חוזרת בהדרגה\n• ה-prefrontal cortex (שליטה עצמית) מתחזק חזרה\n• תיאבון ושינה מסתדרים\n• אנשים רבים מדווחים על "נוכחות גדולה יותר" — פחות ראש במחשבות\n\nחשוב לדעת: אתה עשוי עדיין לחוות דחפים. זה לא אומר שהגמילה לא עובדת. זה אומר שהמוח עדיין בתהליך ריפוי.\n\n💡 משימת היום: צור קשר עם האדם שסיפרת לו ביום 6. עדכן אותו. "שבועיים — עושה טוב."\n\nאנחנו גאים בך מאוד,\nצוות חופשי ✦`,
+    youtube: "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+  },
+  {
+    subject: "יום 15 — חצי הדרך! עכשיו נבנה מנגנון שמירה",
+    body: `שלום,\n\nיום 15. חצי הדרך.\n\nנדבר היום על מנגנון שמירה — מה עושים כשהדחף מכה ואין דרך לברוח?\n\nפרוטוקול חירום ל-5 דקות:\n1. עצור פיזית — קום, שנה חדר\n2. שלוח הודעה לאחד מהרשימה הזו: "עכשיו קשה, תשאל אותי מחר"\n3. מקלחת קרה — 30 שניות של מים קרים שוברים את הדחף פיזיולוגית\n4. אם יש, הפעל מוזיקה חזקה וזוז\n5. פתח את הסיבה שלך — הכתובה ביום 1\n\n5 דקות. אחרי 5 דקות, הדחף כבר בשיפוע יורד.\n\n💡 משימת היום: שמור את פרוטוקול החירום הזה בנגישות — תמונה בגלרייה, הערה בטלפון.\n\nכמעט שם,\nצוות חופשי ✦`,
+    youtube: "https://www.youtube.com/watch?v=t-M8JHJbVeE"
+  },
+  {
+    subject: "יום 16 — ניהול רגשות: מה מסתתר מאחורי הדחף?",
+    body: `שלום,\n\nיום 16. שאלה שמעטים שואלים אותה: מה הרגש שמוביל לדחף?\n\nפורנוגרפיה משמשת לאנשים רבים כרגולציה רגשית — דרך לא מודעת להתמודד עם:\n• בדידות\n• לחץ ועייפות\n• שעמום\n• כישלון\n• כעס\n• חרדה\n\nהבעיה: כשמשתמשים בפורנו כדי לטשטש רגש — הרגש לא נפתר. הוא ממתין. וגדל.\n\nהתרגיל: כשמגיע דחף, שאל: "מה אני מרגיש עכשיו?" ואז: "מה אני באמת צריך?"\n\nלרוב התשובה היא לא פורנו — היא: מנוחה, קשר אנושי, ביטוי עצמי, פורקן.\n\n💡 משימת היום: הוסף "שאלת הרגש" לשגרת הערב שלך: לפני שינה, שאל את עצמך מה הרגשת היום ובאיזה מצב הדחפים היו הכי חזקים.\n\nאנחנו איתך,\nצוות חופשי ✦`,
+    youtube: "https://www.youtube.com/watch?v=lwuGEpBQCxA"
+  },
+  {
+    subject: "יום 17 — נפלת? קרא את זה לפני שאתה מוותר",
+    body: `שלום,\n\nיום 17 — ואם נפלת בדרך, זה הודעה בשבילך.\n\nנפילה אינה כישלון. היא חלק מתהליך הגמילה.\n\nהמחקר על גמילה ברור: רוב האנשים שמצליחים להחלים לטווח ארוך עברו כמה נפילות בדרך. ההבדל בין מי שמצליח למי שלא — הוא לא בנפילה. הוא במה שעושים אחריה.\n\nשתי תגובות אפשריות:\n❌ "אבדתי. הכל ירד. אני חלש."\n✔ "קרה. אני לומד מזה. אני ממשיך."\n\nשאלות לאחר נפילה:\n• מה קרה לפני? מה הטריגר?\n• האם היה ברור כשהתחיל? מה יכולתי לעצור?\n• מה אדאג לשנות לפעם הבאה?\n\nאפס את הלוח. התחל מחדש. אבל תיקח את הידע איתך.\n\n💡 משימת היום: אם נפלת — כתוב את שלוש השאלות. אם לא — שמור אותן לשימוש עתידי.\n\nאנחנו איתך לא משנה מה,\nצוות חופשי ✦`,
+    youtube: "https://www.youtube.com/watch?v=ZXsQAXx_ao0"
+  },
+  {
+    subject: "יום 18 — הכרת תודה: הסיבה שהמוח שלך עובד טוב יותר כשאתה אסיר תודה",
+    body: `שלום,\n\nיום 18. נדבר על כלי פשוט ומוכח — שלאנשים רבים נשמע "חלש" — ושעובד בצורה מדהימה: הכרת תודה.\n\nמחקרים ב-Positive Psychology מראים שכתיבת 3 דברים שאסיר תודה עליהם ביום:\n• מפחיתה פעילות של ה-amygdala (המרכז לחרדה ופחד)\n• מגבירה סרוטונין\n• משפרת שינה\n• מחזקת תחושת שליטה ויכולת\n\nוהדבר הכי חשוב: מוח שמתמקד במה שיש לו — פחות מחפש בריחות.\n\nהכלל: 3 דברים ספציפיים, לא כלליים.\n✘ לא: "אני אסיר תודה על הבריאות"\n✔ כן: "אסיר תודה על שיחת הבוקר עם אמא"\n\n💡 משימת היום: לפני שאתה הולך לישון — כתוב 3. ספציפיים. זה לוקח 2 דקות.\n\nלילה טוב,\nצוות חופשי ✦`,
+    youtube: "https://www.youtube.com/watch?v=WPPPFqsECz0"
+  },
+  {
+    subject: "יום 19 — הטריגר שמאחורי הטריגרים: חיים שלא מספקים",
+    body: `שלום,\n\nיום 19. שאלה גדולה היום — אולי הכי חשובה בכל 30 הימים:\n\nמאיזה חיים אתה בורח?\n\nלעיתים קרובות, פורנוגרפיה אינה הבעיה האמיתית — היא הסימפטום. הבעיה היא חיים שמרגישים ריקים, תקועים, לא מספקים. ובמקום לשנות את החיים — בורחים לגירוי מיידי.\n\nשאלות להגות עליהן:\n• האם יש תחום בחייך שאתה נמנע ממנו? (קשרים, עבודה, חלומות)\n• האם אתה מרוצה ממי שאתה?\n• מה היית עושה אחרת אם ידעת שאי אפשר להיכשל?\n\nגמילה מפורנוגרפיה היא הזדמנות לבנות חיים שבהם אין לך סיבה לברוח.\n\n💡 משימת היום: כתוב תשובה כנה לשאלה: "מאיזה חיים אני בורח?" אין צורך לפתור אותה. רק לכתוב.\n\nאנחנו איתך,\nצוות חופשי ✦`,
+    youtube: "https://www.youtube.com/watch?v=_6BmaE1TzO0"
+  },
+  {
+    subject: "⭐ יום 20 — שני שלישים! אתה בחלק שרוב האנשים לא מגיעים אליו",
+    body: `שלום,\n\n20 ימים. שני שלישים מהדרך.\n\nעצור לרגע ותבין: רוב האנשים שמנסים גמילה נשברים לפני יום 20. אתה הגעת לכאן.\n\nהנה מה שיודעים על שלב זה:\n• הדחפים בדרך כלל יורדים בתדירות\n• המוח ייצר מסלולים חדשים חזקים יחסית\n• אנשים מדווחים על חזרת עניין בפעילויות שלא נגעו בהן זמן רב\n• יש תחושת שליטה גדולה יותר בתחומי חיים אחרים\n\nאבל: שלב זה מסוכן מסיבה אחרת. יש "ביטחון יתר" — תחושה שכבר יכול להרשות פעם אחת. אי אפשר. המוח עדיין בשיקום.\n\n💡 משימת היום: חגוג עם מישהו. ספר לאחד שיש לך 20 ימים נקיים. הגאווה משמרת.\n\nגאים בך כל כך,\nצוות חופשי ✦`,
+    youtube: "https://www.youtube.com/watch?v=SEfs5VA4hH8"
+  },
+  {
+    subject: "יום 21 — 21 יום: מדע ההרגל אומר שהגעת לנקודת מפנה",
+    body: `שלום,\n\n21 יום. קו מאגי.\n\nה"חוק 21 הימים" הוא מפורסם — ולא לגמרי מדויק. המחקר של Phillippa Lally בלונדון מצא שהרגלים לוקחים 18 עד 254 יום, ממוצע 66 יום. אבל יש גרעין אמת: ב-21 יום, המוח בנה מסלולים עצביים חדשים שמספיק חזקים כדי לתמוך בהתנהגות החדשה.\n\nמה זה אומר בפועל: הבחירה שלא להשתמש מתחילה להיות טבעית יותר. פחות "מאמץ לא לעשות" ויותר "פשוט לא עושה".\n\nזה הזמן לחזק את ההרגלים הבריאים שבנית:\n• שגרת הבוקר\n• פעילות גופנית\n• שגרת לילה ללא מסכים\n• הכרת תודה\n\n💡 משימת היום: מה ההרגל הבריא שהכי מחזק אותך? חזק אותו — הוסף לו 5 דקות.\n\nאנחנו איתך,\nצוות חופשי ✦`,
+    youtube: "https://www.youtube.com/watch?v=442B3_TKWY4"
+  },
+  {
+    subject: "יום 22 — קהילה: הכוח שנמצא בסיפורים של אחרים",
+    body: `שלום,\n\nיום 22. היום נדבר על קהילה — ולמה היא כל כך חשובה לשמירה לטווח ארוך.\n\nאנשים שמצליחים לשמור על גמילה לא עושים זאת לבד. הם מוצאים קהילה — אנשים שמבינים, שעברו, שנמצאים באותו מקום.\n\nאיפה למצוא:\n✦ Reddit: r/NoFap — מיליוני חברים, עדויות, תמיכה\n✦ Reddit: r/pornfree — פחות חוגג, יותר מעשי\n✦ קהילות NoFap בטלגרם בעברית\n✦ קבוצות תמיכה פנים-אל-פנים (SA — Sexaholics Anonymous)\n✦ פודקאסטים על גמילה מפורנוגרפיה\n\nקרוא סיפורים של אנשים שסיימו 30, 60, 90 יום — זה לא רק מעניין. זה מדגים אפשרות. המוח לומד מדוגמאות.\n\n💡 משימת היום: קרא 3 עדויות מ-r/NoFap או r/pornfree. שים לב מה משותף לסיפורי ההצלחה.\n\nאנחנו איתך,\nצוות חופשי ✦`,
+    youtube: "https://www.youtube.com/watch?v=V74AxCqOTvg"
+  },
+  {
+    subject: "יום 23 — הנבואה המגשימה את עצמה: זהות, לא רצון",
+    body: `שלום,\n\nיום 23. אחד מהימים החשובים מבחינת עיצוב חשיבה.\n\nיש הבדל עמוק בין שתי אמירות:\n❌ "אני מנסה להפסיק לצפות בפורנו"\n✔ "אני אדם שלא צופה בפורנו"\n\nהראשונה מציבה מאמץ חיצוני. השנייה בונה זהות.\n\nמחקרים של James Clear (ספר Atomic Habits) מראים שאנשים שמגדירים את עצמם לפי הזהות — לא לפי המטרה — מצליחים הרבה יותר. "אני רץ" ולא "אני מנסה לרוץ". "אני לא מעשן" ולא "אני מנסה להפסיק".\n\nהאתגר שלנו: להתחיל לדבר ולחשוב על עצמך כאדם חופשי — לא כאדם שנלחם.\n\n💡 משימת היום: כתוב בדף: "אני ___, ולכן אני לא צופה בפורנוגרפיה." מלא את הריק: אבא, גבר, אדם שמכבד את עצמו — כל מה שמרגיש אמיתי.\n\nאנחנו איתך,\nצוות חופשי ✦`,
+    youtube: "https://www.youtube.com/watch?v=YT7tQzmGRLA"
+  },
+  {
+    subject: "יום 24 — צום דיגיטלי: מה קורה כשמוריד גירויים",
+    body: `שלום,\n\nיום 24. היום נדבר על גירויים דיגיטליים בכלל — לא רק פורנוגרפיה.\n\nהמוח שמתמכר לפורנו מתמכר בעצם לדופמין מהיר. גלילה בסושיאל מדיה, TikTok, ניוזפיד — כולם פועלים על אותו מנגנון: גירוי מהיר, חוסר שובע.\n\nצום דיגיטלי — אפילו חלקי — עוזר למוח לחזור ל"קצב טבעי" שבו דברים פשוטים (שיחה, ספר, הליכה) מספיקים כדי להיות מענגים.\n\nניסוי ל-7 ימים:\n• 2 שעות ביום ללא טלפון (בחר שעות)\n• בוקר ללא מסכים עד 30 דקות אחרי קימה\n• ללא סושיאל בשעה לפני שינה\n\n💡 משימת היום: בחר אחת מהמגבלות הדיגיטליות ויישם אותה היום.\n\nאנחנו איתך,\nצוות חופשי ✦`,
+    youtube: "https://www.youtube.com/watch?v=vOSYmgCT1Bs"
+  },
+  {
+    subject: "יום 25 — 5 ימים לסוף: מה קורה ביום 31?",
+    body: `שלום,\n\nיום 25. חמישה ימים נשארו לאתגר.\n\nעכשיו זה הזמן לחשוב: מה קורה ביום 31?\n\nגמילה אינה יעד — היא נקודת פתיחה. 30 ימים הוכיחו שאתה יכול. אבל הרגל ישן לא נעלם לגמרי — הוא דורמנט. ניתן "להפעיל" אותו חזרה בתנאים הנכונים.\n\nאתגר 30 יום → תכנית חיים:\n• מה גבולות השימוש שתגדיר לעצמך לטווח ארוך?\n• אם תחליט שאפס — מה המנגנונים ששומרים על זה?\n• מה תעשה אם תחוש דחף חזק בחודש השני?\n• האם יש גורם בחייך שעדיין לא טיפלת בו?\n\n💡 משימת היום: כתוב "תכנית יום 31" קצרה — 5 שורות. מה אתה שומר? מה מחייב אותך?\n\nכמעט שם,\nצוות חופשי ✦`,
+    youtube: "https://www.youtube.com/watch?v=mNeXuCYiE0U"
+  },
+  {
+    subject: "יום 26 — מכתב לעצמך: לאדם שהיית לפני חודש",
+    body: `שלום,\n\nיום 26. תרגיל שמשנה נקודת מבט — ועוזר להבין כמה הלכת.\n\nכתוב מכתב קצר — 10 שורות — לאדם שהיית לפני 26 יום.\n\nמה היית אומר לו? מה לא ידע שאתה יודע עכשיו? מה הוא פחד ממנו שלא קרה? מה גילה אותו שהיה מפחיד אותו?\n\nמכתב לדוגמה (לא חייב לחקות):\n"שלום [שמך], אתה עומד לעשות שינוי שנראה גדול מדי. הוא לא. השבוע הראשון יהיה קשה, אבל הדחפים עוברים. אחרי שבוע תתחיל לישון טוב יותר. אחרי שניים — יהיה לך קל יותר להסתכל על עצמך במראה..."\n\n💡 משימת היום: כתוב את המכתב. אפשר בנייר, בהערות, בכל מקום. זה בשבילך — לא לאף אחד אחר.\n\nאנחנו איתך,\nצוות חופשי ✦`,
+    youtube: "https://www.youtube.com/watch?v=ZXsQAXx_ao0"
+  },
+  {
+    subject: "יום 27 — ציפיות לטווח ארוך: כמה זמן עד שמרגיש שונה לגמרי?",
+    body: `שלום,\n\nיום 27. שאלה שרבים רוצים לדעת: כמה זמן לוקח לרפא את המוח לגמרי?\n\nהתשובה הישרה: תלוי בעוצמת ההרגל, אבל מחקרים מצביעים על:\n• 2–4 שבועות: איזון ראשוני בדופמין, שיפור בשינה וריכוז\n• 2–3 חודשים: שיקום משמעותי ב-prefrontal cortex\n• 6–12 חודשים: שינוי עמוק בתגובה לגירויים רגשיים\n\n30 יום הם לא הסוף. הם ההתחלה.\n\nמה שמשנה: כל יום ללא פורנוגרפיה המוח מחזיר קצת מהגמישות שלו. כל חשיפה לדחף בלי פעולה מחזקת את שרירי השליטה העצמית.\n\nזה לא מרוץ. זה בנייה.\n\n💡 משימת היום: קבע לעצמך יעד לאחר יום 30: "אני שומר על 60 ימים" — ורשום את זה.\n\nאנחנו איתך,\nצוות חופשי ✦`,
+    youtube: "https://www.youtube.com/watch?v=gBA_KMKFmvs"
+  },
+  {
+    subject: "🔑 יום 28 — ארבעה שבועות! הכלי האחרון: מה לעשות בשנת ה-1",
+    body: `שלום,\n\n28 ימים. ארבעה שבועות מלאים.\n\nהנה הכלי האחרון שרציתי לתת לך לקראת הסיום — מה אנשים שמצליחים לשמור על שנה ויותר עושים אחרת:\n\n1. הם לא מסתמכים רק על רצון — הם שומרים על מנגנונים: חוסמים, שגרה, אדם אחראי.\n2. הם מזהים "לחש" — המחשבה הראשונה שמובילה לנפילה — ועוצרים שם.\n3. הם ממשיכים לבנות חיים שמספקים — עבודה, קשרים, גוף.\n4. הם מקבלים שיהיו ימים קשים — ולא מפרשים אותם ככישלון.\n5. הם לא מנסים להיות מושלמים — הם מנסים לחזור מהר כשנופלים.\n\n💡 משימת היום: מה אחת מהאסטרטגיות הנ"ל שהכי קשה לך? תכנן כיצד תחזק אותה.\n\nשני ימים נותרו,\nצוות חופשי ✦`,
+    youtube: "https://www.youtube.com/watch?v=k6LB9wsGEOk"
+  },
+  {
+    subject: "יום 29 — מחר זה יום 30. הנה מה שלמדת",
+    body: `שלום,\n\nמחר זה יום 30.\n\nלפני שנגיע לסוף — נסתכל אחורה. מה למדת בחודש האחרון?\n\nכמה שאלות לשתף בלי שיפוטיות:\n• כמה פעמים חשבת שאתה לא יכול — וכן יכולת?\n• מה הטריגר הכי קשה שלך — ואיך התמודדת איתו?\n• מה השתנה בחיים שלך — גם דברים קטנים?\n• מה הדבר שהכי הפתיע אותך בתהליך?\n\nלאנשים שהשלימו 30 יום: מחקרים מראים שאלו שמתעדים את תהליכם ומשתפים — גם בצורה אנונימית — שומרים על ההישג ב-3 עד 4 פעמים יותר מאלו שלא.\n\n💡 משימת היום: שיתוף. בצורה כלשהי — ביומן, עם חבר, בפוסט אנונימי. "הגעתי ליום 29."\n\nמחר זה יום גדול,\nצוות חופשי ✦`,
+    youtube: "https://www.youtube.com/watch?v=au4h4kqFQVA"
+  },
+  {
+    subject: "🏆 יום 30 — עשית את זה. ועכשיו מה?",
+    body: `שלום,\n\n30 ימים. עשית את זה.\n\nתתן לזה לשקוע רגע: לפני חודש, הרגל שנבנה אולי שנים — עמדת מולו, יום אחרי יום, ולא ויתרת. זה לא קטן. זה עצום.\n\nמה עכשיו?\n\nיום 30 הוא לא הסוף של האתגר — הוא תחילת הפרק הבא. כמה דברים חשובים:\n\n✦ אל תחגוג עם "פעם אחת לא ישנה" — המוח עדיין לא שכח.\n✦ שמור על המנגנונים: חוסמים, שגרה, האדם האחראי.\n✦ תשתף את הניצחון — שיתוף מחזק.\n✦ שים לעצמך יעד הבא: 60 ימים, 90 ימים.\n✦ זכור: הגמילה לא מוגדרת על ידי 30 יום — היא מוגדרת על ידי מי שאתה בוחר להיות.\n\nאתה אדם שהוכיח לעצמו שיכול לשנות. זה הנכס הכי גדול שיש לך.\n\nברכות, ותודה שנתת לנו לליוות אותך.\nצוות חופשי ✦\n\nP.S. שתף אחד אחר שצריך את זה. אולי זה ישנה את חייו.`,
+    youtube: "https://www.youtube.com/watch?v=mNeXuCYiE0U"
+  }
+];
+
+const DEFAULT_GOALS = [
+  { day: 1, title: "יום ראשון — ההחלטה", desc: "הקשה ביותר הוא להתחיל. עשית אותה." },
+  { day: 7, title: "שבוע ראשון", desc: "המוח מתחיל להסתגל. המסלולים החדשים נבנים." },
+  { day: 14, title: "שבועיים", desc: "רמות דופמין מתאזנות. נוכחות ושמחה חוזרות." },
+  { day: 21, title: "שלושה שבועות", desc: "21 יום — ההרגל החדש מתמצק." },
+  { day: 30, title: "30 יום — חופשי!", desc: "השלמת את האתגר. כעת שמור על הניצחון." },
+];
+
+const STEP_NAMES = [
+  { title: "הכרה בבעיה", sub: "הודאה כנה" },
+  { title: "הגדרת הגבול", sub: "מה גמילה אומרת לי" },
+  { title: "הסרת גישה", sub: "חוסמים ומוחקים" },
+  { title: "זיהוי טריגרים", sub: "מתי ואיפה" },
+  { title: "תכנית חלופה", sub: "מה עושים במקום" },
+  { title: "תמיכה חברתית", sub: "לא לבד" },
+  { title: "מיינדפולנס", sub: "גלישה על הגל" },
+  { title: "ניהול רגשות", sub: "לזהות מה מוביל" },
+  { title: "שגרה בריאה", sub: "הבסיס לשחרור" },
+  { title: "בחינה יומית", sub: "5 דקות בלילה" },
+  { title: "התמודדות עם נפילה", sub: "ללמוד וממשיכים" },
+  { title: "שמירה לטווח ארוך", sub: "זהות חדשה" },
+];
+
+// =================== AUTH ===================
+
+function openModal(type) {
+  document.getElementById('modal-overlay').classList.add('open');
+  switchModal(type);
+}
+function closeModal() { document.getElementById('modal-overlay').classList.remove('open'); }
+function closeModalOverlay(e) { if(e.target.id === 'modal-overlay') closeModal(); }
+function switchModal(type) {
+  ['modal-login','modal-register','modal-admin-login'].forEach(id => {
+    document.getElementById(id).style.display = 'none';
+  });
+  document.getElementById('modal-'+type).style.display = 'block';
+}
+
+function doRegister() {
+  const name = document.getElementById('reg-name').value.trim();
+  const email = document.getElementById('reg-email').value.trim();
+  const pw = document.getElementById('reg-password').value;
+  const err = document.getElementById('reg-error');
+  err.style.display = 'none';
+  if(!name || !email || pw.length < 6) { err.textContent = 'מלא את כל השדות (לפחות 6 תווים בסיסמה)'; err.style.display='block'; return; }
+  const users = getUsers();
+  if(users.find(u => u.email === email)) { err.style.display='block'; return; }
+  const user = {
+    id: Date.now().toString(),
+    name, email, password: pw,
+    startDate: new Date().toISOString(),
+    days: [], // array of {day:N, status:'done'|'relapse'}
+    steps: [], // completed step indices
+    emailTips: '',
+    relapseCount: 0,
+  };
+  users.push(user);
+  saveUsers(users);
+  localStorage.setItem(KEY_CURRENT, user.id);
+  closeModal();
+  showPage('dashboard');
+}
+
+function doLogin() {
+  const email = document.getElementById('login-email').value.trim();
+  const pw = document.getElementById('login-password').value;
+  const err = document.getElementById('login-error');
+  err.style.display = 'none';
+  const users = getUsers();
+  const user = users.find(u => u.email === email && u.password === pw);
+  if(!user) { err.style.display='block'; return; }
+  localStorage.setItem(KEY_CURRENT, user.id);
+  closeModal();
+  showPage('dashboard');
+}
+
+function doAdminLogin() {
+  const pw = document.getElementById('admin-password').value;
+  const err = document.getElementById('admin-error');
+  if(pw !== ADMIN_PASS) { err.style.display='block'; return; }
+  localStorage.setItem('detox_admin', '1');
+  closeModal();
+  showPage('admin');
+}
+
+function logout() {
+  localStorage.removeItem(KEY_CURRENT);
+  localStorage.removeItem('detox_admin');
+  updateNav();
+  showPage('home');
+}
+
+// =================== NAVIGATION ===================
+
+function showPage(name) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-' + name).classList.add('active');
+  window.scrollTo(0,0);
+  if(name === 'dashboard') renderDashboard();
+  if(name === 'admin') renderAdmin();
+  updateNav();
+}
+
+function updateNav() {
+  const user = getCurrentUser();
+  const isAdmin = localStorage.getItem('detox_admin') === '1';
+  document.getElementById('nav-login-btn').style.display = (user || isAdmin) ? 'none' : '';
+  document.getElementById('nav-dash-btn').style.display = user ? '' : 'none';
+  document.getElementById('nav-admin-btn').style.display = isAdmin ? '' : 'none';
+  document.getElementById('nav-logout-btn').style.display = (user || isAdmin) ? '' : 'none';
+}
+
+function scrollToWhy() { document.getElementById('why-section')?.scrollIntoView({behavior:'smooth'}); }
+function scrollToSteps() { document.getElementById('steps-section')?.scrollIntoView({behavior:'smooth'}); }
+
+// =================== DASHBOARD ===================
+
+function getDayNum(user) {
+  const start = new Date(user.startDate);
+  const now = new Date();
+  const diff = Math.floor((now - start) / (1000*60*60*24));
+  return Math.min(diff + 1, 30);
+}
+
+function getStreak(user) {
+  const dayNum = getDayNum(user);
+  let streak = 0;
+  for(let i = dayNum; i >= 1; i--) {
+    const d = user.days.find(x => x.day === i);
+    if(d && d.status === 'relapse') break;
+    if(d && d.status === 'done') streak++;
+    else if(i === dayNum) continue;
+    else break;
+  }
+  return streak;
+}
+
+function renderDashboard() {
+  const user = getCurrentUser();
+  if(!user) { showPage('home'); return; }
+  document.getElementById('dash-name').textContent = user.name;
+
+  const dayNum = getDayNum(user);
+  const doneDays = user.days.filter(d => d.status === 'done').length;
+  const streak = getStreak(user);
+  const pct = Math.round((doneDays / 30) * 100);
+
+  // Ring
+  document.getElementById('ring-days').textContent = doneDays;
+  const circ = 326.7;
+  const offset = circ - (doneDays / 30) * circ;
+  document.getElementById('ring-circle').style.strokeDashoffset = offset;
+
+  document.getElementById('streak-num').textContent = streak;
+  document.getElementById('percent-num').textContent = pct + '%';
+
+  // Tip
+  const tips = getTips();
+  const tipIdx = Math.min(dayNum - 1, tips.length - 1);
+  const tip = tips[tipIdx] || {};
+  document.getElementById('tip-day-num').textContent = dayNum;
+  const subject = tip.subject || tip || '';
+  const body = tip.body || '';
+  const yt = tip.youtube || '';
+  const subjectLine = subject.replace(/^יום \d+ [—–-] /, '').replace(/^[🏆⭐🔟🔑🎉]+\s*/, '');
+  document.getElementById('tip-text-display').innerHTML =
+    `<strong style="color:var(--text);display:block;margin-bottom:0.5rem">${subjectLine}</strong>` +
+    `<span style="white-space:pre-line">${body}</span>` +
+    (yt ? `<br><a href="${yt}" target="_blank" style="color:var(--accent);font-size:0.85rem;margin-top:0.75rem;display:inline-block">▶ צפה בסרטון ביוטיוב →</a>` : '');
+
+  // Day grid
+  const grid = document.getElementById('day-grid');
+  grid.innerHTML = '';
+  for(let i=1; i<=30; i++) {
+    const d = document.createElement('div');
+    d.className = 'day-dot';
+    d.textContent = i;
+    const rec = user.days.find(x => x.day === i);
+    if(rec?.status === 'done') d.classList.add('done');
+    else if(rec?.status === 'relapse') d.classList.add('relapse');
+    else if(i === dayNum) d.classList.add('today');
+    grid.appendChild(d);
+  }
+
+  // Steps checklist
+  const cl = document.getElementById('steps-checklist');
+  cl.innerHTML = '';
+  STEP_NAMES.forEach((s, idx) => {
+    const done = user.steps.includes(idx);
+    const div = document.createElement('div');
+    div.className = 'step-check' + (done ? ' done' : '');
+    div.innerHTML = `
+      <div class="step-check-box">${done ? '✓' : ''}</div>
+      <div>
+        <div class="step-check-text">${idx+1}. ${s.title}</div>
+        <div class="step-check-sub">${s.sub}</div>
+      </div>`;
+    div.onclick = () => toggleStep(idx);
+    cl.appendChild(div);
+  });
+
+  // Email prefill
+  if(user.emailTips) document.getElementById('email-tips-input').value = user.emailTips;
+}
+
+function markToday() {
+  const user = getCurrentUser();
+  const day = getDayNum(user);
+  if(user.days.find(d => d.day === day && d.status === 'done')) { showToast('כבר סומן להיום! 💪'); return; }
+  user.days = user.days.filter(d => d.day !== day);
+  user.days.push({ day, status: 'done' });
+  updateCurrentUser(user);
+  renderDashboard();
+  showToast('יום ' + day + ' — נסגר! ✅');
+}
+
+function reportRelapse() {
+  if(!confirm('האם אתה בטוח שרוצה לדווח על חלקה? זה לא סוף — זה חלק מהתהליך.')) return;
+  const user = getCurrentUser();
+  const day = getDayNum(user);
+  user.days = user.days.filter(d => d.day !== day);
+  user.days.push({ day, status: 'relapse' });
+  user.relapseCount = (user.relapseCount || 0) + 1;
+  updateCurrentUser(user);
+  renderDashboard();
+  showToast('נפילה נרשמה. קום, אפס, תמשיך 💛');
+}
+
+function confirmReset() {
+  if(!confirm('לאפס את תאריך ההתחלה? כל הנתונים ינוקו.')) return;
+  const user = getCurrentUser();
+  user.startDate = new Date().toISOString();
+  user.days = [];
+  user.steps = [];
+  user.relapseCount = 0;
+  updateCurrentUser(user);
+  renderDashboard();
+  showToast('האתגר אופס — יום 1 מחדש!');
+}
+
+function toggleStep(idx) {
+  const user = getCurrentUser();
+  if(user.steps.includes(idx)) user.steps = user.steps.filter(s => s !== idx);
+  else user.steps.push(idx);
+  updateCurrentUser(user);
+  renderDashboard();
+}
+
+function saveEmailTips() {
+  const val = document.getElementById('email-tips-input').value.trim();
+  if(!val || !val.includes('@')) { showToast('אנא הכנס אימייל תקין'); return; }
+  const user = getCurrentUser();
+  user.emailTips = val;
+  updateCurrentUser(user);
+  const tips = getTips();
+  const day = getDayNum(user);
+  const nextDay = Math.min(day + 1, 30);
+  const nextTip = tips[nextDay - 1] || {};
+  document.getElementById('next-tip-day').textContent = nextDay;
+  document.getElementById('next-tip-text').textContent = nextTip.subject || nextTip || '';
+  document.getElementById('next-tip-preview').style.display = 'flex';
+  showToast('נרשמת לטיפים יומיים! ✉️');
+}
+
+// =================== ADMIN ===================
+
+function switchAdminTab(tab) {
+  document.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.admin-panel').forEach(p => p.classList.remove('active'));
+  event.target.classList.add('active');
+  document.getElementById('admin-tab-' + tab).classList.add('active');
+}
+
+function renderAdmin() {
+  const users = getUsers();
+  // Stats
+  const statsGrid = document.getElementById('admin-stats-grid');
+  statsGrid.innerHTML = `
+    <div class="admin-stat-card"><div class="asc-num">${users.length}</div><div class="asc-label">משתמשים רשומים</div></div>
+    <div class="admin-stat-card"><div class="asc-num">${users.filter(u => getDayNum(u) >= 30 && u.days.filter(d=>d.status==='done').length >= 28).length}</div><div class="asc-label">השלימו אתגר</div></div>
+    <div class="admin-stat-card"><div class="asc-num">${users.reduce((a,u) => a + u.days.filter(d=>d.status==='done').length, 0)}</div><div class="asc-label">סה"כ ימים נקיים</div></div>
+    <div class="admin-stat-card"><div class="asc-num">${users.reduce((a,u) => a + (u.relapseCount||0), 0)}</div><div class="asc-label">סה"כ נפילות</div></div>
+    <div class="admin-stat-card"><div class="asc-num">${users.filter(u=>u.emailTips).length}</div><div class="asc-label">נרשמו לטיפים</div></div>
+  `;
+
+  // Users table
+  const tbody = document.getElementById('users-tbody');
+  tbody.innerHTML = '';
+  users.forEach(u => {
+    const day = getDayNum(u);
+    const done = u.days.filter(d=>d.status==='done').length;
+    const streak = getStreak(u);
+    const relapses = u.relapseCount || 0;
+    let statusBadge = '<span class="badge badge-amber">בתהליך</span>';
+    if(done >= 28) statusBadge = '<span class="badge badge-green">השלים!</span>';
+    if(relapses > 3) statusBadge = '<span class="badge badge-red">בסיכון</span>';
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td>${u.name}</td>
+      <td style="color:var(--text2)">${u.email}</td>
+      <td>${day}/30</td>
+      <td>${streak} יום</td>
+      <td>${relapses}</td>
+      <td>${statusBadge}</td>
+      <td><button class="btn-sm" onclick="adminResetUser('${u.id}')">אפס</button></td>
+    `;
+    tbody.appendChild(tr);
+  });
+
+  // Tips editor
+  const tips = getTips();
+  const tEl = document.getElementById('tip-editor-list');
+  tEl.innerHTML = '';
+  tips.forEach((tip, i) => {
+    const t = (typeof tip === 'object') ? tip : { subject: tip, body: '', youtube: '' };
+    const div = document.createElement('div');
+    div.className = 'tip-editor-row';
+    div.style.cssText = 'background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:1.25rem;margin-bottom:1rem;';
+    div.innerHTML = `
+      <div style="font-size:0.8rem;color:var(--accent);font-weight:700;margin-bottom:0.75rem">יום ${i+1}</div>
+      <label>נושא האימייל (Subject)</label>
+      <input type="text" id="tip-subject-${i}" value="${(t.subject||'').replace(/"/g,'&quot;')}"
+        style="width:100%;background:var(--bg3);border:1px solid rgba(255,255,255,0.08);border-radius:6px;padding:0.65rem 0.85rem;color:var(--text);font-family:Assistant,sans-serif;font-size:0.88rem;margin-bottom:0.6rem;outline:none;direction:rtl">
+      <label style="margin-top:0.6rem">גוף האימייל</label>
+      <textarea id="tip-body-${i}" style="width:100%;background:var(--bg3);border:1px solid rgba(255,255,255,0.08);border-radius:6px;padding:0.75rem;color:var(--text);font-family:Assistant,sans-serif;font-size:0.88rem;resize:vertical;min-height:120px;outline:none;direction:rtl;margin-bottom:0.6rem">${t.body||''}</textarea>
+      <label style="margin-top:0.6rem">קישור יוטיוב</label>
+      <input type="url" id="tip-yt-${i}" value="${t.youtube||''}"
+        style="width:100%;background:var(--bg3);border:1px solid rgba(255,255,255,0.08);border-radius:6px;padding:0.65rem 0.85rem;color:var(--accent);font-family:Assistant,sans-serif;font-size:0.85rem;outline:none;direction:ltr">
+    `;
+    tEl.appendChild(div);
+  });
+
+  // Goals editor
+  const goals = getGoals();
+  const gEl = document.getElementById('goals-list');
+  gEl.innerHTML = '';
+  goals.forEach((g, i) => {
+    const div = document.createElement('div');
+    div.style.cssText = 'background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:1.25rem;margin-bottom:1rem;';
+    div.innerHTML = `
+      <div style="display:flex;gap:1rem;flex-wrap:wrap">
+        <div style="flex:0 0 80px">
+          <label style="font-size:0.78rem;color:var(--text2);display:block;margin-bottom:0.3rem">יום</label>
+          <input type="number" id="goal-day-${i}" value="${g.day}" style="width:100%;background:var(--bg3);border:1px solid rgba(255,255,255,0.1);border-radius:6px;padding:0.6rem;color:var(--text);font-family:Assistant,sans-serif;direction:ltr;outline:none">
+        </div>
+        <div style="flex:1;min-width:150px">
+          <label style="font-size:0.78rem;color:var(--text2);display:block;margin-bottom:0.3rem">כותרת</label>
+          <input type="text" id="goal-title-${i}" value="${g.title}" style="width:100%;background:var(--bg3);border:1px solid rgba(255,255,255,0.1);border-radius:6px;padding:0.6rem;color:var(--text);font-family:Assistant,sans-serif;direction:rtl;outline:none">
+        </div>
+        <div style="flex:2;min-width:200px">
+          <label style="font-size:0.78rem;color:var(--text2);display:block;margin-bottom:0.3rem">תיאור</label>
+          <input type="text" id="goal-desc-${i}" value="${g.desc}" style="width:100%;background:var(--bg3);border:1px solid rgba(255,255,255,0.1);border-radius:6px;padding:0.6rem;color:var(--text);font-family:Assistant,sans-serif;direction:rtl;outline:none">
+        </div>
+      </div>`;
+    gEl.appendChild(div);
+  });
+}
+
+function adminResetUser(id) {
+  if(!confirm('לאפס משתמש זה?')) return;
+  const users = getUsers();
+  const u = users.find(x => x.id === id);
+  if(!u) return;
+  u.startDate = new Date().toISOString();
+  u.days = []; u.steps = []; u.relapseCount = 0;
+  saveUsers(users);
+  renderAdmin();
+  showToast('משתמש אופס');
+}
+
+function saveTips() {
+  const tips = [];
+  for(let i=0; i<30; i++) {
+    tips.push({
+      subject: document.getElementById('tip-subject-'+i)?.value || '',
+      body: document.getElementById('tip-body-'+i)?.value || '',
+      youtube: document.getElementById('tip-yt-'+i)?.value || '',
+    });
+  }
+  saveTipsData(tips);
+  showToast('הטיפים נשמרו ✅');
+}
+
+function saveGoals() {
+  const goals = getGoals();
+  const updated = goals.map((g, i) => ({
+    day: parseInt(document.getElementById('goal-day-'+i)?.value || g.day),
+    title: document.getElementById('goal-title-'+i)?.value || g.title,
+    desc: document.getElementById('goal-desc-'+i)?.value || g.desc,
+  }));
+  saveGoalsData(updated);
+  showToast('היעדים נשמרו ✅');
+}
+
+// =================== UTILS ===================
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+// Animate counters
+function animateCount(el, target, suffix='') {
+  let cur = 0;
+  const step = Math.ceil(target / 40);
+  const interval = setInterval(() => {
+    cur = Math.min(cur + step, target);
+    el.textContent = cur.toLocaleString() + suffix;
+    if(cur >= target) clearInterval(interval);
+  }, 30);
+}
+
+// =================== INIT ===================
+
+window.addEventListener('load', () => {
+  updateNav();
+  // Check if already logged in
+  const user = getCurrentUser();
+  const isAdmin = localStorage.getItem('detox_admin') === '1';
+  if(user) {
+    // Stay on home, just update nav
+  }
+
+  // Counter animation
+  const users = getUsers();
+  const totalDays = users.reduce((a,u) => a + u.days.filter(d=>d.status==='done').length, 0);
+  setTimeout(() => {
+    animateCount(document.getElementById('counter-users'), Math.max(users.length, 128));
+    animateCount(document.getElementById('counter-days'), Math.max(totalDays, 2341));
+  }, 400);
+});
+</script>
+</body>
+</html>
